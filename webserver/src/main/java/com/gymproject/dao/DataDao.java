@@ -3,6 +3,7 @@ package com.gymproject.dao;
 import java.util.List;
 
 import com.gymproject.model.Employee;
+import com.gymproject.model.Usuario;
 
 public interface DataDao {
 

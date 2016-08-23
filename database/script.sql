@@ -29,6 +29,13 @@ CREATE TABLE IF NOT EXISTS `gym`.`usuario` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
 
+--
+-- Dumping data for table `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`) VALUES
+(1, 'marco', 'marco@gmail.com', '202cb962ac59075b964b07152d234b70');
+
 
 -- -----------------------------------------------------
 -- Table `gym`.`ficha`

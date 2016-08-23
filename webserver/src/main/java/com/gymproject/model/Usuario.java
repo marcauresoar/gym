@@ -35,8 +35,7 @@ public class Usuario implements Serializable {
 	@Column(name = "senha", unique = false, nullable = false, length = 128)
 	private String senha;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private Set<Ficha> fichas = new HashSet<Ficha>(0);
+	
 
 	public Long getId() {
 		return id;
@@ -70,12 +69,5 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 	
-	public Set<Ficha> getFichas() {
-		return fichas;
-	}
-
-	public void setFichas(Set<Ficha> fichas) {
-		this.fichas = fichas;
-	}
 	
 }

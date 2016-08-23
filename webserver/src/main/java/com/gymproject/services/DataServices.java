@@ -3,6 +3,7 @@ package com.gymproject.services;
 import java.util.List;
 
 import com.gymproject.model.Employee;
+import com.gymproject.model.Usuario;
 
 public interface DataServices {
 	public boolean addEntity(Employee employee) throws Exception;

@@ -25,7 +25,6 @@ public class SerieTreino implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@Enumerated
 	@Column(name = "tipo", nullable = false, length = 64)
 	private String tipo;
 	

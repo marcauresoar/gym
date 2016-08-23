@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,7 +24,6 @@ public class Serie implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@Enumerated
 	@Column(name = "tipo", nullable = false, length = 64)
 	private String tipo;
 	
@@ -41,6 +39,7 @@ public class Serie implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "exercicio_id", nullable = false)
 	private Exercicio exercicio;
+
 
 	public Long getId() {
 		return id;
@@ -89,5 +88,4 @@ public class Serie implements Serializable {
 	public void setExercicio(Exercicio exercicio) {
 		this.exercicio = exercicio;
 	}
-	
 }

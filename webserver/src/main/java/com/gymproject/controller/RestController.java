@@ -3,7 +3,6 @@ package com.gymproject.controller;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import com.gymproject.model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gymproject.classes.Status;
 import com.gymproject.model.Employee;
 import com.gymproject.services.DataServices;
 
@@ -30,10 +30,10 @@ public class RestController {
 	Status addEmployee(@RequestBody Employee employee) {
 		try {
 			dataServices.addEntity(employee);
-			return new Status(1, "Employee added Successfully !");
+			return new Status(1, "Employee added Successfully !", null);
 		} catch (Exception e) {
 			// e.printStackTrace();
-			return new Status(0, e.toString());
+			return new Status(0, e.toString(), null);
 		}
 
 	}
@@ -72,9 +72,9 @@ public class RestController {
 
 		try {
 			dataServices.deleteEntity(id);
-			return new Status(1, "Employee deleted Successfully !");
+			return new Status(1, "Employee deleted Successfully !",null);
 		} catch (Exception e) {
-			return new Status(0, e.toString());
+			return new Status(0, e.toString(),null);
 		}
 
 	}

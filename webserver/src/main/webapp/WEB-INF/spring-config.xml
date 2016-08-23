@@ -13,7 +13,7 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/employee_db" />
+		<property name="url" value="jdbc:mysql://localhost:3306/gym" />
 		<property name="username" value="root" />
 		<property name="password" value="vertigo" />
 	</bean>
@@ -24,6 +24,10 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.gymproject.model.Employee</value>
+				<value>com.gymproject.model.Usuario</value>
+				<value>com.gymproject.model.Ficha</value>
+				<value>com.gymproject.model.Exercicio</value>
+				<value>com.gymproject.model.Serie</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -44,4 +48,8 @@
 
 	<bean id="dataDao" class="com.gymproject.dao.DataDaoImpl"></bean>
 	<bean id="dataServices" class="com.gymproject.services.DataServicesImpl"></bean>
+	
+	<bean id="acessoDao" class="com.gymproject.dao.AcessoDaoImpl"></bean>
+	<bean id="acessoServices" class="com.gymproject.services.AcessoServicesImpl"></bean>
+	
 </beans>

@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.gymproject.model.Employee;
+import com.gymproject.model.Usuario;
 
 public class DataDaoImpl implements DataDao {
 
@@ -44,7 +45,7 @@ public class DataDaoImpl implements DataDao {
 	public List<Employee> getEntityList() throws Exception {
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
-		List<Employee> employeeList = session.createCriteria(Employee.class)
+		List<Employee> employeeList = session.createCriteria(Usuario.class)
 				.list();
 		tx.commit();
 		session.close();

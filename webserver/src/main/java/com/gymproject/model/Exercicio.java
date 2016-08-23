@@ -36,9 +36,6 @@ public class Exercicio implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ficha_id", nullable = false)
 	private Ficha ficha;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "exercicio")
-	private Set<Serie> series = new HashSet<Serie>(0);
 
 	public Long getId() {
 		return id;
@@ -70,14 +67,6 @@ public class Exercicio implements Serializable {
 
 	public void setFicha(Ficha ficha) {
 		this.ficha = ficha;
-	}
-	
-	public Set<Serie> getSeries() {
-		return series;
-	}
-
-	public void setSeries(Set<Serie> series) {
-		this.series = series;
 	}
 	
 }

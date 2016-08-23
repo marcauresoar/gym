@@ -42,9 +42,6 @@ public class Treino implements Serializable {
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ficha")
-	private Set<ExercicioTreino> exercicios = new HashSet<ExercicioTreino>(0);
-
 	public Long getId() {
 		return id;
 	}
@@ -83,14 +80,6 @@ public class Treino implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public Set<ExercicioTreino> getExercicios() {
-		return exercicios;
-	}
-
-	public void setExercicios(Set<ExercicioTreino> exercicios) {
-		this.exercicios = exercicios;
 	}
 
 }
