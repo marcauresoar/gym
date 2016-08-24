@@ -1,4 +1,4 @@
-package com.gymproject.app;
+package com.gymproject.app.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,8 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
+
+import com.gymproject.app.R;
+import com.gymproject.app.fragments.LoginFragment;
+import com.gymproject.app.fragments.RegistrarFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private int[] tabIcons = {
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -43,28 +42,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTabIcons() {
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("ONE");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
+        View tab1 = getLayoutInflater().inflate(R.layout.custom_tab, null);
+        tab1.findViewById(R.id.icon).setBackgroundResource(R.mipmap.ic_login);
+        TextView tab1Text = (TextView) tab1.findViewById(R.id.text);
+        tab1Text.setText("Fazer login");
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Two");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_launcher, 0, 0);
+        View tab2 = getLayoutInflater().inflate(R.layout.custom_tab, null);
+        tab2.findViewById(R.id.icon).setBackgroundResource(R.mipmap.ic_registrar);
+        TextView tab2Text = (TextView) tab2.findViewById(R.id.text);
+        tab2Text.setText("Criar conta");
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText("Three");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_launcher, 0, 0);
-
-        tabLayout.getTabAt(0).setCustomView(tabOne);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+        tabLayout.getTabAt(0).setCustomView(tab1);
+        tabLayout.getTabAt(1).setCustomView(tab2);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new OneFragment(), "ONE");
-        adapter.addFrag(new TwoFragment(), "TWO");
-        adapter.addFrag(new ThreeFragment(), "THREE");
+        adapter.addFrag(new LoginFragment(), "Login");
+        adapter.addFrag(new RegistrarFragment(), "Registrar");
         viewPager.setAdapter(adapter);
     }
 
