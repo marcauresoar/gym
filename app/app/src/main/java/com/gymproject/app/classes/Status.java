@@ -3,7 +3,7 @@ package com.gymproject.app.classes;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Status {
+public class Status<T> {
 
     @SerializedName("codigo")
     private int codigo;
@@ -12,7 +12,7 @@ public class Status {
     private String mensagem;
 
     @SerializedName("dados")
-    private Object dados;
+    private T dados;
 
     public Status() {
     }
@@ -33,15 +33,15 @@ public class Status {
         this.mensagem = mensagem;
     }
 
-    public Object getDados() {
+    public T getDados() {
         return dados;
     }
 
-    public void setDados(Object dados) {
+    public void setDados(T dados) {
         this.dados = dados;
     }
 
-    public Status(int codigo, String mensagem, Object dados) {
+    public Status(int codigo, String mensagem, T dados) {
         super();
         this.codigo = codigo;
         this.mensagem = mensagem;

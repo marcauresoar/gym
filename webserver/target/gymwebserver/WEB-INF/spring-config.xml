@@ -13,9 +13,9 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/gym" />
-		<property name="username" value="root" />
-		<property name="password" value="vertigo" />
+		<property name="url" value="jdbc:mysql://127.7.147.2:3306/gym" />
+		<property name="username" value="adminJ97t4GQ" />
+		<property name="password" value="NwWe6AttGL8D" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -49,7 +49,7 @@
 	<bean id="dataDao" class="com.gymproject.dao.DataDaoImpl"></bean>
 	<bean id="dataServices" class="com.gymproject.services.DataServicesImpl"></bean>
 	
-	<bean id="usuarioDao" class="com.gymproject.dao.UsuarioDaoImpl"></bean>
+	<bean id="acessoDao" class="com.gymproject.dao.AcessoDaoImpl"></bean>
 	<bean id="acessoServices" class="com.gymproject.services.AcessoServicesImpl"></bean>
 	
 </beans>

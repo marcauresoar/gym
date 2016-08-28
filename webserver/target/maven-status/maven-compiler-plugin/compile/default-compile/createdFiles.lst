@@ -1,5 +1,4 @@
 com/gymproject/services/AcessoServicesImpl.class
-com/gymproject/dao/UsuarioDao.class
 com/gymproject/model/Usuario.class
 com/gymproject/services/AcessoServices.class
 com/gymproject/model/Serie.class
@@ -7,8 +6,6 @@ com/gymproject/services/DataServices.class
 com/gymproject/dao/DataDaoImpl.class
 com/gymproject/controller/RestController.class
 com/gymproject/dao/DataDao.class
-com/gymproject/classes/DadosLogin.class
-com/gymproject/dao/UsuarioDaoImpl.class
 com/gymproject/classes/Status.class
 com/gymproject/model/ExercicioTreino.class
 com/gymproject/controller/AcessoController.class

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gymproject.classes.Status;
 import com.gymproject.model.Usuario;
 import com.gymproject.services.AcessoServices;
+import com.gymproject.utils.ValidateUtils;
 
 
 @Controller
@@ -26,6 +27,20 @@ public class AcessoController {
 	public @ResponseBody 
 	Status autenticarLogin(@RequestParam("email") String email, 
 			@RequestParam("senha") String senha) {
+		
+		if(email.isEmpty()) {
+			return new Status(0, "O campo Email precisa ser preenchido!", null);
+		}
+		
+		if(!ValidateUtils.isEmailValid(email)){
+			return new Status(0, "O campo Email contêm um valor inválido!", null);
+		}
+		
+		if(senha.isEmpty()) {
+			return new Status(0, "O campo Senha precisa ser preenchido!", null);
+		}
+		
+		
 
 		List<Usuario> usuarios = null;
 		try {
@@ -41,5 +56,41 @@ public class AcessoController {
 
 		return new Status(0, "Houve um erro ao tentar realizar essa ação!", null);
 	}
+	
+	@RequestMapping(value = "/criarConta", method = RequestMethod.POST)
+	public @ResponseBody 
+	Status criarConta(@RequestParam("nome") String nome, @RequestParam("email") String email, 
+			@RequestParam("senha") String senha) {
+		
+		if(nome.isEmpty()) {
+			return new Status(0, "O campo Nome precisa ser preenchido!", null);
+		}
+		
+		if(email.isEmpty()) {
+			return new Status(0, "O campo Email precisa ser preenchido!", null);
+		}
+		
+		if(!ValidateUtils.isEmailValid(email)){
+			return new Status(0, "O campo Email contêm um valor inválido!", null);
+		}
+		
+		if(senha.isEmpty()) {
+			return new Status(0, "O campo Senha precisa ser preenchido!", null);
+		}
+		
+		try {
+			if(acessoServices.emailDisponivel(email)) {
+				Usuario usuario = acessoServices.inserirUsuario(nome, email, senha);
+				return new Status(1, "Conta criada com sucesso!", usuario);
+			} else {
+				return new Status(0, "Já existe um usuário utilizando este email!", null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new Status(0, "Houve um erro ao tentar realizar essa ação!", null);
+	}
+	
 	
 }

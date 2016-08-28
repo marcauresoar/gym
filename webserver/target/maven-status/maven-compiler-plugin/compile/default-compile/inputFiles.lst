@@ -1,10 +1,9 @@
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/services/DataServices.java
+/home/marco/Development/gym/webserver/src/main/java/com/gymproject/dao/AcessoDao.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/model/ExercicioTreino.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/model/SerieTreino.java
-/home/marco/Development/gym/webserver/src/main/java/com/gymproject/dao/UsuarioDao.java
-/home/marco/Development/gym/webserver/src/main/java/com/gymproject/classes/DadosLogin.java
+/home/marco/Development/gym/webserver/src/main/java/com/gymproject/dao/AcessoDaoImpl.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/model/Exercicio.java
-/home/marco/Development/gym/webserver/src/main/java/com/gymproject/dao/UsuarioDaoImpl.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/services/DataServicesImpl.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/controller/AcessoController.java
 /home/marco/Development/gym/webserver/src/main/java/com/gymproject/services/AcessoServicesImpl.java

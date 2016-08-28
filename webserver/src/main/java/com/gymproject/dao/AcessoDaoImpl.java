@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gymproject.model.Usuario;
+import com.gymproject.utils.HashUtils;
 
 public class AcessoDaoImpl implements AcessoDao {
 
@@ -26,30 +27,36 @@ public class AcessoDaoImpl implements AcessoDao {
 	public List<Usuario> autenticarLogin(String email, String senha) throws Exception {
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
-		List<Usuario> employeeList = session.createCriteria(Usuario.class).add(Restrictions.eq("email", email))
-				.add(Restrictions.eq("senha", md5(senha))).list();
+		List<Usuario> userList = session.createCriteria(Usuario.class).add(Restrictions.eq("email", email))
+				.add(Restrictions.eq("senha", HashUtils.md5(senha))).list();
 		tx.commit();
 		session.close();
-		return employeeList;
+		return userList;
 	}
-	
-	
-	
-	
-	/**
-	 * Converter uma string para md5
-	 * @param str
-	 * @return
-	 */
-	public String md5(String str){
-		MessageDigest m;
-		try {
-			m = MessageDigest.getInstance("MD5");
-			m.update(str.getBytes(), 0, str.length());
-			return new BigInteger(1, m.digest()).toString(16);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean emailDisponivel(String email) throws Exception {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		List<Usuario> users = session.createCriteria(Usuario.class).add(Restrictions.eq("email", email)).list();
+		tx.commit();
+		session.close();
+		return users.size() > 0 && users.get(0) != null ? false : true;
 	}
+
+	@Override
+	public Usuario inserirUsuario(String nome, String email, String senha) throws Exception {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		Usuario usuario = new Usuario();
+		usuario.setNome(nome);
+		usuario.setEmail(email);
+		usuario.setSenha(HashUtils.md5(senha));
+		session.save(usuario);
+		tx.commit();
+		session.close();
+		return usuario;
+	}
+
 }

@@ -16,4 +16,14 @@ public class AcessoServicesImpl implements AcessoServices {
 	public List<Usuario> autenticarLogin(String email, String senha) throws Exception {
 		return acessoDao.autenticarLogin(email, senha);
 	}
+
+	@Override
+	public boolean emailDisponivel(String email) throws Exception {
+		return acessoDao.emailDisponivel(email);
+	}
+
+	@Override
+	public Usuario inserirUsuario(String nome, String email, String senha) throws Exception {
+		return acessoDao.inserirUsuario(nome, email, senha);
+	}
 }
