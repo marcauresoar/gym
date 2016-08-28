@@ -30,6 +30,10 @@ public class SessionUtils {
     // User name (make variable public to access from outside)
     public static final String KEY_ID = "id";
 
+    public static final String KEY_NOME = "nome";
+
+    public static final String KEY_EMAIL = "email";
+
     protected SessionUtils(Context context){
         context = context;
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -46,15 +50,29 @@ public class SessionUtils {
     /**
      * Create login session
      * */
-    public void createLoginSession(String id){
+    public void createLoginSession(String id, String nome, String email){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
         editor.putString(KEY_ID, id);
+        editor.putString(KEY_NOME, nome);
+        editor.putString(KEY_EMAIL, email);
 
         // commit changes
         editor.commit();
+    }
+
+    public String getIdUsuario(){
+        return pref.getString(KEY_ID, "");
+    }
+
+    public String getNomeUsuario(){
+        return pref.getString(KEY_NOME, "");
+    }
+
+    public String getEmailUsuario(){
+        return pref.getString(KEY_EMAIL, "");
     }
 
     /**

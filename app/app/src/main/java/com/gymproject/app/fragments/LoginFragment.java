@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment{
                     if(status.getCodigo() == 1) {
                         Usuario usuario = (Usuario) status.getDados();
                         if (usuario.getId() > 0) {
-                            SessionUtils.getInstance(getContext()).createLoginSession(usuario.getId().toString());
+                            SessionUtils.getInstance(getContext()).createLoginSession(usuario.getId().toString(), usuario.getNome(), usuario.getEmail());
                             Intent intent = new Intent(getContext(), DashboardActivity.class);
                             startActivity(intent);
                             getActivity().finish();

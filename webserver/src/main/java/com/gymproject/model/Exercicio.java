@@ -33,7 +33,7 @@ public class Exercicio implements Serializable {
 	@Column(name = "grupos_musculares", unique = true, nullable = false, length = 256)
 	private String grupos_musculares;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ficha_id", nullable = false)
 	private Ficha ficha;
 

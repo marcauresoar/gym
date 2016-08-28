@@ -33,12 +33,9 @@ public class Ficha implements Serializable {
 	@Column(name = "dias_semana", unique = true, nullable = false, length = 256)
 	private String dias_semana;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ficha")
-	private Set<Exercicio> exercicios = new HashSet<Exercicio>(0);
 
 	public Long getId() {
 		return id;
@@ -70,14 +67,6 @@ public class Ficha implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-	
-	public Set<Exercicio> getExercicios() {
-		return exercicios;
-	}
-
-	public void setExercicios(Set<Exercicio> exercicios) {
-		this.exercicios = exercicios;
 	}
 	
 }

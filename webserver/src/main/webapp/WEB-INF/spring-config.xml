@@ -60,4 +60,7 @@
 	<bean id="acessoDao" class="com.gymproject.dao.AcessoDaoImpl"></bean>
 	<bean id="acessoServices" class="com.gymproject.services.AcessoServicesImpl"></bean>
 	
+	<bean id="fichaDao" class="com.gymproject.dao.FichaDaoImpl"></bean>
+	<bean id="fichaServices" class="com.gymproject.services.FichaServicesImpl"></bean>
+	
 </beans>

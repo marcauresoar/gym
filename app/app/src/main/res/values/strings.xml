@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Academia App</string>
+
+    <string name="navigation_drawer_open">Abrir menu</string>
+    <string name="navigation_drawer_close">Fechar Menu</string>
+
+    <string name="title_activity_ficha">Fichas de Exercício</string>
 </resources>
