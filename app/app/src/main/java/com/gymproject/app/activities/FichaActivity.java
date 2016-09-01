@@ -2,9 +2,12 @@ package com.gymproject.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,15 +16,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.gymproject.app.R;
 import com.gymproject.app.adapters.FichasAdapter;
 import com.gymproject.app.classes.Status;
 import com.gymproject.app.models.Ficha;
-import com.gymproject.app.models.Usuario;
 import com.gymproject.app.restful.RestfulAPI;
-import com.gymproject.app.services.AcessoService;
 import com.gymproject.app.services.FichaService;
 import com.gymproject.app.utils.SessionUtils;
 
@@ -32,14 +32,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FichaActivity extends AppCompatActivity {
+public class FichaActivity extends AppCompatActivity{
 
     private RecyclerView recyclerView;
     private FichasAdapter adapter;
     private List<Ficha> fichaList;
 
-    TextView txtMensagem;
     Snackbar snackbar;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class FichaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        txtMensagem = (TextView) findViewById(R.id.txtMensagem);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -64,13 +65,24 @@ public class FichaActivity extends AppCompatActivity {
 
         listarFichas();
 
-    }
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                listarFichas();
+            }
+        });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ficha, menu);
-        return true;
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(FichaActivity.this, GerenciarFichaActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -79,22 +91,12 @@ public class FichaActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_atualizar:
-                listarFichas();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void buildRecyclerViewer(){
-
-    }
-
     public void listarFichas () {
-        txtMensagem.setText("Buscando registros, aguarde...");
-        txtMensagem.setVisibility(View.VISIBLE);
-
         FichaService apiService =
                 RestfulAPI.getClient().create(FichaService.class);
 
@@ -111,28 +113,29 @@ public class FichaActivity extends AppCompatActivity {
                             for(Ficha ficha : fichas){
                                 fichaList.add(ficha);
                             }
-                            txtMensagem.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
-                        }else {
-                            txtMensagem.setText("Nenhum item encontrado!");
                         }
                     } else {
-                        txtMensagem.setText(status.getMensagem());
+                        snackbar = Snackbar
+                                .make(coordinatorLayout, status.getMensagem(), Snackbar.LENGTH_LONG);
+                        snackbar.show();
                     }
                 }else {
                     onFailure(call, new Throwable("Erro com os dados retornados do servidor!"));
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<Status<List<Ficha>>>call, Throwable t) {
                 Log.e("listarFichas", t.toString());
-                txtMensagem.setText("Houve um erro ao tentar realizar esta ação!");
+                snackbar = Snackbar
+                        .make(coordinatorLayout, "Houve um erro ao tentar realizar esta ação!", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
-
-
     }
+
 
 }

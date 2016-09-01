@@ -24,7 +24,12 @@
         <activity
             android:name=".activities.FichaActivity"
             android:label="@string/title_activity_ficha"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activities.GerenciarFichaActivity"
+            android:label="@string/title_activity_gerenciar_ficha"
             android:theme="@style/MyMaterialTheme"></activity>
+        <activity android:name=".activities.RecyclerViewDemoActivity" />
     </application>
 
 </manifest>

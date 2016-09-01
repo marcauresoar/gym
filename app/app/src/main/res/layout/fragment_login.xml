@@ -6,8 +6,7 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,13 +15,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/edtEmail"
             android:hint="Email" />
-    </LinearLayout>
+    </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="wrap_content">
 
         <EditText
             android:layout_width="match_parent"
@@ -30,7 +27,7 @@
             android:id="@+id/edtSenha"
             android:hint="Senha"
             android:inputType="textPassword" />
-    </LinearLayout>
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:orientation="vertical"

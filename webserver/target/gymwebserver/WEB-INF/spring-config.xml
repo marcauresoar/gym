@@ -9,22 +9,22 @@
 
 	<context:component-scan base-package="com.gymproject.controller" />
 	<mvc:annotation-driven />
-
+<!--
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/gym" />
 		<property name="username" value="root" />
 		<property name="password" value="vertigo" />
-	</bean>
+	</bean>-->
 	
-	<!-- <bean id="dataSource"
+	 <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://127.7.147.2:3306/gym" />
 		<property name="username" value="adminJ97t4GQ" />
 		<property name="password" value="NwWe6AttGL8D" />
-	</bean> -->
+	</bean> 
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -59,5 +59,8 @@
 	
 	<bean id="acessoDao" class="com.gymproject.dao.AcessoDaoImpl"></bean>
 	<bean id="acessoServices" class="com.gymproject.services.AcessoServicesImpl"></bean>
+	
+	<bean id="fichaDao" class="com.gymproject.dao.FichaDaoImpl"></bean>
+	<bean id="fichaServices" class="com.gymproject.services.FichaServicesImpl"></bean>
 	
 </beans>

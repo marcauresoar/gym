@@ -11,7 +11,8 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
-        card_view:cardCornerRadius="@dimen/card_album_radius">
+        android:clickable="true"
+        android:foreground="@drawable/statelist_item_background">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_three_dots" />
+                android:src="@mipmap/ic_options"
+                android:paddingRight="10dp" />
 
         </RelativeLayout>
 

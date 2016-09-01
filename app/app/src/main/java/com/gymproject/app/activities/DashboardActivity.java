@@ -66,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ficha) {
-            Intent intent = new Intent(this, FichaActivity.class);
+            Intent intent = new Intent(this, RecyclerViewDemoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_treino) {
 
