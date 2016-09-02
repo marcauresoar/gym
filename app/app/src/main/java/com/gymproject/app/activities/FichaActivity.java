@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -13,8 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.gymproject.app.R;
@@ -32,11 +36,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FichaActivity extends AppCompatActivity{
+public class FichaActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener,
+        View.OnClickListener,
+        android.view.ActionMode.Callback {
 
     private RecyclerView recyclerView;
     private FichasAdapter adapter;
     private List<Ficha> fichaList;
+    int lastSelectedItem = -1;
+    GestureDetectorCompat gestureDetector;
+    android.view.ActionMode actionMode;
 
     Snackbar snackbar;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -82,6 +91,10 @@ public class FichaActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
+        recyclerView.addOnItemTouchListener(this);
+        gestureDetector =
+                new GestureDetectorCompat(this, new RecyclerViewOnGestureListener());
 
     }
 
@@ -135,6 +148,92 @@ public class FichaActivity extends AppCompatActivity{
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    private void myToggleSelection(int idx) {
+        adapter.toggleSelection(idx);
+        lastSelectedItem = idx;
+        String title = "Ficha: " + adapter.getItem(idx).getNome();
+        actionMode.setTitle(title);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        gestureDetector.onTouchEvent(e);
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean b) {
+
+    }
+
+    @Override
+    public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
+        // Inflate a menu resource providing context menu items
+        MenuInflater inflater = actionMode.getMenuInflater();
+        inflater.inflate(R.menu.menu_ficha_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(android.view.ActionMode actionMode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_deletar:
+                int selectedItem = adapter.getSelectedItem();
+                adapter.removeData(selectedItem);
+                actionMode.finish();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(android.view.ActionMode actionMode) {
+        this.actionMode = null;
+        adapter.clearSelections();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    private class RecyclerViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            int idx = recyclerView.getChildAdapterPosition(view);
+            if (actionMode != null) {
+                if(idx >= 0 && idx != lastSelectedItem) {
+                    myToggleSelection(idx);
+                    return false;
+                }
+                actionMode.finish();
+            }
+            return super.onSingleTapConfirmed(e);
+        }
+
+        public void onLongPress(MotionEvent e) {
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (actionMode != null) {
+                return;
+            }
+            actionMode = startActionMode(FichaActivity.this);
+            int idx = recyclerView.getChildAdapterPosition(view);
+            myToggleSelection(idx);
+            super.onLongPress(e);
+        }
     }
 
 
