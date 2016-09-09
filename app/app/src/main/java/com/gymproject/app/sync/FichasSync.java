@@ -11,6 +11,7 @@ import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.dao.FichaDao;
 import com.gymproject.app.dao.UpdateFichaDao;
 import com.gymproject.app.models.Ficha;
+import com.gymproject.app.models.Usuario;
 import com.gymproject.app.restful.RestfulAPI;
 import com.gymproject.app.services.FichaService;
 import com.gymproject.app.sync.event.SyncEvent;
@@ -48,71 +49,18 @@ class FichasSync extends AbsSync {
 
         Log.i("FichasSync", "execute post method");
 
+        Realm realm=Realm.getDefaultInstance();
 
+        realm.beginTransaction();
 
+        List<UpdateFicha> updates = realm.where(UpdateFicha.class).findAll();
 
-
-        /*UpdateFicha updateFicha = new UpdateFicha();
-        List<Change> changes = ChangeDao.getAll(Realm.getDefaultInstance(), "ficha");
-        Log.i("qtd", String.valueOf(changes.size()));
-        updateFicha.setChanges(changes);
-        if(changes.size() > 0){
-            List<Ficha> objetos = new ArrayList<>();
-            for(Change change : changes){
-                System.out.println("HERE");
-                objetos.add(FichaDao.getById(Realm.getDefaultInstance(), change.getId()));
-            }
-            updateFicha.setObjetos(objetos);
-        }*/
-
-        List<UpdateFicha> lista = UpdateFichaDao.getAll(Realm.getDefaultInstance());
-        List<UpdateFicha> novaLista = new ArrayList<>();
-        if(lista.size() > 0){
-            System.out.println("nada a ve");
-            /*for(UpdateFicha updateFicha : lista){
-                novaLista.add(updateFicha.createCopy());
-            }*/
-        }
-
-        Another another = new Another();
-        another.setId("2");
-        another.setOutro("blablabla");
-
-        Test test = new Test();
-        test.setId("1");
-        test.setNome("marcoooooo");
-        test.setAnother(another);
+        realm.commitTransaction();
 
         FichaService apiService =
                 RestfulAPI.getClient().create(FichaService.class);
 
-        Call<String> call = apiService.test(test);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String>call, Response<String> response) {
-                String status = response.body();
-                if(status != null) {
-                    Log.e("updateFicha", status);
-                } else {
-                    onFailure(call, new Throwable("Erro com os dados retornados do servidor!"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("updateFichas", t.toString());
-            }
-        });
-        /*UpdateFicha updateFicha = new UpdateFicha();
-        updateFicha.setAcao("insert");
-        updateFicha.setId("1");
-        updateFicha.setFicha(new Ficha("1", "minha ficha", "Segunda", new Usuario("1", "masdas", "sadasd@dads.com", "asdasdsa")));
-        novaLista.add(updateFicha);*/
-
-        /*FichaService apiService =
-                RestfulAPI.getClient().create(FichaService.class);
-
-        Call<Status> call = apiService.updateFicha(lista);
+        Call<Status> call = apiService.updateFicha(updates);
         call.enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status>call, Response<Status> response) {
@@ -130,7 +78,8 @@ class FichasSync extends AbsSync {
             public void onFailure(Call<Status> call, Throwable t) {
                 Log.e("updateFichas", t.toString());
             }
-        });*/
+        });
+
     }
 
     @Override

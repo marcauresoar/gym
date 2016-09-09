@@ -10,8 +10,7 @@ import io.realm.UpdateFichaRealmProxy;
 import io.realm.UsuarioRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = { UsuarioRealmProxy.class },
-        value = Parcel.Serialization.BEAN,
+@Parcel(value = Parcel.Serialization.BEAN,
         analyze = { Usuario.class })
 public class Usuario extends RealmObject {
 

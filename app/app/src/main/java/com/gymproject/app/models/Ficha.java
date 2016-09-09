@@ -9,8 +9,7 @@ import io.realm.RealmObject;
 import io.realm.UpdateFichaRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = { FichaRealmProxy.class },
-        value = Parcel.Serialization.BEAN,
+@Parcel(value = Parcel.Serialization.BEAN,
         analyze = { Ficha.class })
 public class Ficha extends RealmObject {
 

@@ -23,6 +23,6 @@ public interface FichaService {
     Call<Status> updateFicha(@Body List<UpdateFicha> updateFicha);
 
     @POST("ficha/test")
-    Call<String> test(@Body Test usuario);
+    Call<String> test(@Body Ficha usuario);
 
 }
