@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.gymproject.app.R;
 import com.gymproject.app.activities.DashboardActivity;
 import com.gymproject.app.classes.Status;
+import com.gymproject.app.dao.UsuarioDao;
 import com.gymproject.app.models.Usuario;
 import com.gymproject.app.restful.RestfulAPI;
 import com.gymproject.app.services.AcessoService;
@@ -86,8 +87,9 @@ public class RegistrarFragment extends Fragment{
                 if(status != null) {
                     if(status.getCodigo() == 1) {
                         Usuario usuario = (Usuario) status.getDados();
-                        if(usuario.getId() > 0) {
-                            SessionUtils.getInstance(getContext()).createLoginSession(usuario.getId().toString(), usuario.getNome(), usuario.getEmail());
+                        if(!usuario.getId().isEmpty()) {
+                            SessionUtils.getInstance(getContext()).createLoginSession(usuario.getId());
+                            UsuarioDao.save(usuario);
                             Intent intent = new Intent(getContext(), DashboardActivity.class);
                             startActivity(intent);
                             getActivity().finish();

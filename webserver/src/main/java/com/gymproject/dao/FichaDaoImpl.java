@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gymproject.model.Employee;
 import com.gymproject.model.Ficha;
 import com.gymproject.model.Usuario;
 
@@ -30,5 +31,15 @@ public class FichaDaoImpl implements FichaDao {
 		tx.commit();
 		session.close();
 		return fichas;
+	}
+	
+	@Override
+	public boolean insert(Ficha ficha) throws Exception {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		session.save(ficha);
+		tx.commit();
+		session.close();
+		return false;
 	}
 }

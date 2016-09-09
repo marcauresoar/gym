@@ -2,18 +2,17 @@ package com.gymproject.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,18 +22,17 @@ import android.view.View;
 
 import com.gymproject.app.R;
 import com.gymproject.app.adapters.FichasAdapter;
-import com.gymproject.app.classes.Status;
-import com.gymproject.app.models.Ficha;
-import com.gymproject.app.restful.RestfulAPI;
-import com.gymproject.app.services.FichaService;
-import com.gymproject.app.utils.SessionUtils;
+import com.gymproject.app.dao.FichaDao;
+import com.gymproject.app.sync.SyncService;
+import com.gymproject.app.sync.event.EventBusManager;
+import com.gymproject.app.sync.event.SyncEvent;
+import com.gymproject.app.sync.event.SyncStatus;
+import com.gymproject.app.sync.event.SyncType;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.realm.Realm;
 
 public class FichaActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener,
         View.OnClickListener,
@@ -42,7 +40,6 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
 
     private RecyclerView recyclerView;
     private FichasAdapter adapter;
-    private List<Ficha> fichaList;
     int lastSelectedItem = -1;
     GestureDetectorCompat gestureDetector;
     android.view.ActionMode actionMode;
@@ -51,10 +48,16 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
     SwipeRefreshLayout mSwipeRefreshLayout;
     CoordinatorLayout coordinatorLayout;
 
+    private Realm realm;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ficha);
+
+        realm = Realm.getDefaultInstance();
+        EventBusManager.register(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,21 +67,18 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        fichaList = new ArrayList<>();
-        adapter = new FichasAdapter(this, fichaList);
+        adapter = new FichasAdapter(FichaDao.getAll(realm));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        listarFichas();
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                listarFichas();
+                SyncService.request(SyncType.FICHAS);
             }
         });
 
@@ -87,7 +87,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(FichaActivity.this, GerenciarFichaActivity.class);
+                Intent intent = new Intent(FichaActivity.this, CriarFichaActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,47 +107,6 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void listarFichas () {
-        FichaService apiService =
-                RestfulAPI.getClient().create(FichaService.class);
-
-        Call<Status<List<Ficha>>> call = apiService.listarFichas(SessionUtils.getInstance(this).getIdUsuario());
-        call.enqueue(new Callback<Status<List<Ficha>>>() {
-            @Override
-            public void onResponse(Call<Status<List<Ficha>>>call, Response<Status<List<Ficha>>> response) {
-                Status status = response.body();
-                if(status != null) {
-                    if(status.getCodigo() == 1) {
-                        List<Ficha> fichas = (List<Ficha>) status.getDados();
-                        if (fichas.size() > 0) {
-                            fichaList.clear();
-                            for(Ficha ficha : fichas){
-                                fichaList.add(ficha);
-                            }
-                            adapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        snackbar = Snackbar
-                                .make(coordinatorLayout, status.getMensagem(), Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-                }else {
-                    onFailure(call, new Throwable("Erro com os dados retornados do servidor!"));
-                }
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<Status<List<Ficha>>>call, Throwable t) {
-                Log.e("listarFichas", t.toString());
-                snackbar = Snackbar
-                        .make(coordinatorLayout, "Houve um erro ao tentar realizar esta ação!", Snackbar.LENGTH_LONG);
-                snackbar.show();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
     }
 
     private void myToggleSelection(int idx) {
@@ -233,6 +192,25 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
             int idx = recyclerView.getChildAdapterPosition(view);
             myToggleSelection(idx);
             super.onLongPress(e);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        EventBusManager.unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SyncEvent event) {
+        if (event.getType() == SyncType.FICHAS && event.getStatus() == SyncStatus.IN_PROGRESS) {
+            if (!mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        } else if (event.getType() == SyncType.FICHAS && event.getStatus() == SyncStatus.COMPLETED) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            adapter.notifyDataSetChanged();
         }
     }
 

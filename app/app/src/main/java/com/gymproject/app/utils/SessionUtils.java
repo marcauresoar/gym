@@ -3,8 +3,13 @@ package com.gymproject.app.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.gymproject.app.activities.InicioActivity;
+import com.gymproject.app.dao.UsuarioDao;
+import com.gymproject.app.models.Usuario;
+
+import io.realm.Realm;
 
 public class SessionUtils {
     private static SessionUtils instance;
@@ -30,10 +35,6 @@ public class SessionUtils {
     // User name (make variable public to access from outside)
     public static final String KEY_ID = "id";
 
-    public static final String KEY_NOME = "nome";
-
-    public static final String KEY_EMAIL = "email";
-
     protected SessionUtils(Context context){
         context = context;
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -50,14 +51,12 @@ public class SessionUtils {
     /**
      * Create login session
      * */
-    public void createLoginSession(String id, String nome, String email){
+    public void createLoginSession(String id){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
         editor.putString(KEY_ID, id);
-        editor.putString(KEY_NOME, nome);
-        editor.putString(KEY_EMAIL, email);
 
         // commit changes
         editor.commit();
@@ -68,11 +67,17 @@ public class SessionUtils {
     }
 
     public String getNomeUsuario(){
-        return pref.getString(KEY_NOME, "");
+        Log.i("id", getIdUsuario());
+        return "";
+        //return getUsuario().getNome();
     }
 
     public String getEmailUsuario(){
-        return pref.getString(KEY_EMAIL, "");
+        return getUsuario().getEmail();
+    }
+
+    public Usuario getUsuario(){
+        return UsuarioDao.getById(Realm.getDefaultInstance(), getIdUsuario());
     }
 
     /**

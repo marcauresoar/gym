@@ -17,4 +17,9 @@ public class FichaServicesImpl implements FichaServices {
 		return fichaDao.listarFichas(id);
 	}
 
+	@Override
+	public boolean insert(Ficha ficha) throws Exception {
+		return fichaDao.insert(ficha);
+	}
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.utils.SessionUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -11,6 +12,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SyncService.start(getApplicationContext());
 
         if(SessionUtils.getInstance(getApplicationContext()).isLoggedIn()) {
             Intent intent = new Intent(this, DashboardActivity.class);

@@ -1,8 +1,22 @@
 package com.gymproject.app.models;
 
-public class Ficha {
+import com.google.gson.annotations.SerializedName;
 
-    private Integer id;
+import org.parceler.Parcel;
+
+import io.realm.FichaRealmProxy;
+import io.realm.RealmObject;
+import io.realm.UpdateFichaRealmProxy;
+import io.realm.annotations.PrimaryKey;
+
+@Parcel(implementations = { FichaRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Ficha.class })
+public class Ficha extends RealmObject {
+
+    @PrimaryKey
+    private String id;
+
     private String nome;
     private String dias_semana;
     private Usuario usuario;
@@ -10,18 +24,18 @@ public class Ficha {
     public Ficha() {
     }
 
-    public Ficha(Integer id, String nome, String dias_semana, Usuario usuario) {
+    public Ficha(String id, String nome, String dias_semana, Usuario usuario) {
         this.id = id;
         this.nome = nome;
         this.dias_semana = dias_semana;
         this.usuario = usuario;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,5 +61,14 @@ public class Ficha {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Ficha createCopy(){
+        Ficha ficha = new Ficha();
+        ficha.setId(this.id);
+        ficha.setNome(this.nome);
+        ficha.setDias_semana(this.dias_semana);
+        ficha.setUsuario(this.usuario.createCopy());
+        return ficha;
     }
 }

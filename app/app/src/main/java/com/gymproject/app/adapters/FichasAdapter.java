@@ -14,7 +14,6 @@ import java.util.List;
 
 public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewHolder> {
 
-    private Context mContext;
     private List<Ficha> items;
     private int selectedItem;
 
@@ -28,8 +27,7 @@ public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewH
         }
     }
 
-    public FichasAdapter(Context mContext, List<Ficha> items) {
-        this.mContext = mContext;
+    public FichasAdapter(List<Ficha> items) {
         if (items == null) {
             throw new IllegalArgumentException("modelData must not be null");
         }
