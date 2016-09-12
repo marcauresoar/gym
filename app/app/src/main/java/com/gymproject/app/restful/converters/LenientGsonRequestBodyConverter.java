@@ -1,4 +1,4 @@
-package com.gymproject.app.restful;
+package com.gymproject.app.restful.converters;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

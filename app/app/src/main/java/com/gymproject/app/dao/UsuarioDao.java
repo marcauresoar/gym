@@ -19,11 +19,17 @@ public class UsuarioDao {
     }
     @NonNull
     public static Usuario getById(@NonNull Realm realm, String id) {
-        return realm.where(Usuario.class).equalTo("id", id).findFirst();
+        realm.beginTransaction();
+        Usuario data = realm.where(Usuario.class).equalTo("id", id).findFirst();
+        realm.commitTransaction();
+        return data;
     }
 
     @NonNull
     public static List<Usuario> getAll(@NonNull Realm realm) {
-        return realm.where(Usuario.class).findAll();
+        realm.beginTransaction();
+        List<Usuario> lista = realm.where(Usuario.class).findAll();
+        realm.commitTransaction();
+        return lista;
     }
 }

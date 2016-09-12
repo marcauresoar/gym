@@ -1,17 +1,9 @@
 package com.gymproject.app.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import org.parceler.Parcel;
-
 import io.realm.RealmObject;
-import io.realm.UpdateFichaRealmProxy;
 import io.realm.UsuarioRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(value = Parcel.Serialization.BEAN,
-        analyze = { Usuario.class })
 public class Usuario extends RealmObject {
 
     @PrimaryKey
@@ -21,13 +13,6 @@ public class Usuario extends RealmObject {
     private String senha;
 
     public Usuario(){}
-
-    public Usuario(String id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
 
     public String getId() {
         return id;
@@ -59,16 +44,6 @@ public class Usuario extends RealmObject {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-
-    public Usuario createCopy(){
-        Usuario usuario = new Usuario();
-        usuario.setId(this.id);
-        usuario.setNome(this.nome);
-        usuario.setEmail(this.email);
-        usuario.setSenha(this.senha);
-        return usuario;
     }
 
 }

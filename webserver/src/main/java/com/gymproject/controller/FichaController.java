@@ -2,7 +2,6 @@ package com.gymproject.controller;
 
 import java.util.List;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,16 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gymproject.classes.Status;
 import com.gymproject.classes.UpdateFicha;
-import com.gymproject.model.Employee;
 import com.gymproject.model.Ficha;
 import com.gymproject.model.Usuario;
 import com.gymproject.services.FichaServices;
-import com.gymproject.utils.ValidateUtils;
 
 @Controller
 @RequestMapping("/ficha")
@@ -29,7 +25,7 @@ public class FichaController {
 	FichaServices fichaServices;
 
 	@RequestMapping(value = "/listar/{id}", method = RequestMethod.GET)
-	public @ResponseBody Status getEmployee(@PathVariable("id") String id) {
+	public @ResponseBody Status listar(@PathVariable("id") String id) {
 		try {
 			List<Ficha> fichas = fichaServices.listarFichas(id);
 			return new Status(1, "Fichas listadas com sucesso!", fichas);
@@ -48,11 +44,17 @@ public class FichaController {
 			for(UpdateFicha update : updates){
 
 				try {
-					if (update.getAcao().equals("insert")) {
-						fichaServices.insert(update.getFicha());
+					if (update.getAcao().equals("insert") || update.getAcao().equals("update")) {
+						if(update.getAcao().equals("insert")){
+							update.getFicha().setId(null);
+						}
+						fichaServices.save(update.getFicha());
+						sucessos++;
 					}
-					
-					sucessos++;
+					if (update.getAcao().equals("delete")) {
+						fichaServices.delete(update.getMid());
+						sucessos++;
+					}
 
 				} catch (Exception e) {
 					e.printStackTrace();

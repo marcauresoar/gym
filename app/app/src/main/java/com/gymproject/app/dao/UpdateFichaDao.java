@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.gymproject.app.models.UpdateFicha;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -31,11 +32,18 @@ public class UpdateFichaDao {
 
     @NonNull
     public static List<UpdateFicha> getAll(@NonNull Realm realm) {
-        return realm.where(UpdateFicha.class).findAll();
+        realm.beginTransaction();
+        RealmResults<UpdateFicha> results = realm.where(UpdateFicha.class).findAll();
+        realm.commitTransaction();
+        List<UpdateFicha> lista = new ArrayList<>(results.subList(0, results.size()));
+        return lista;
     }
 
     @NonNull
     public static UpdateFicha getById(@NonNull Realm realm, String id) {
-        return realm.where(UpdateFicha.class).equalTo("id", id).findFirst();
+        realm.beginTransaction();
+        UpdateFicha data = realm.where(UpdateFicha.class).equalTo("id", id).findFirst();
+        realm.commitTransaction();
+        return data;
     }
 }

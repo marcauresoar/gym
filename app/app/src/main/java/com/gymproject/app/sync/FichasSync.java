@@ -5,13 +5,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.gymproject.app.classes.Status;
-import com.gymproject.app.models.Another;
-import com.gymproject.app.models.Test;
 import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.dao.FichaDao;
 import com.gymproject.app.dao.UpdateFichaDao;
 import com.gymproject.app.models.Ficha;
-import com.gymproject.app.models.Usuario;
 import com.gymproject.app.restful.RestfulAPI;
 import com.gymproject.app.services.FichaService;
 import com.gymproject.app.sync.event.SyncEvent;
@@ -22,7 +19,6 @@ import com.gymproject.app.utils.SessionUtils;
 import java.util.*;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,11 +26,9 @@ import retrofit2.Response;
 class FichasSync extends AbsSync {
 
     Context context;
-    Realm realm;
 
     FichasSync(@NonNull Context context) {
         super(context);
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -49,13 +43,10 @@ class FichasSync extends AbsSync {
 
         Log.i("FichasSync", "execute post method");
 
-        Realm realm=Realm.getDefaultInstance();
-
-        realm.beginTransaction();
-
-        List<UpdateFicha> updates = realm.where(UpdateFicha.class).findAll();
-
-        realm.commitTransaction();
+        List<UpdateFicha> updates = UpdateFichaDao.getAll(Realm.getDefaultInstance());
+        if(updates.size()>0){
+            System.out.println(updates.get(0).getMid());
+        }
 
         FichaService apiService =
                 RestfulAPI.getClient().create(FichaService.class);
@@ -77,6 +68,7 @@ class FichasSync extends AbsSync {
             @Override
             public void onFailure(Call<Status> call, Throwable t) {
                 Log.e("updateFichas", t.toString());
+                SyncEvent.send(getSyncType(), SyncStatus.COMPLETED);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.gymproject.app.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,8 @@ import android.view.View;
 import com.gymproject.app.R;
 import com.gymproject.app.adapters.FichasAdapter;
 import com.gymproject.app.dao.FichaDao;
+import com.gymproject.app.models.Ficha;
+import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.sync.event.EventBusManager;
 import com.gymproject.app.sync.event.SyncEvent;
@@ -32,14 +36,16 @@ import com.gymproject.app.sync.event.SyncType;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import io.realm.Realm;
 
 public class FichaActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener,
         View.OnClickListener,
         android.view.ActionMode.Callback {
 
-    private RecyclerView recyclerView;
-    private FichasAdapter adapter;
+    RecyclerView recyclerView;
+    FichasAdapter adapter;
     int lastSelectedItem = -1;
     GestureDetectorCompat gestureDetector;
     android.view.ActionMode actionMode;
@@ -68,6 +74,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         adapter = new FichasAdapter(FichaDao.getAll(realm));
+
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -147,14 +154,45 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
     @Override
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+            case R.id.action_editar:
+                Ficha fichaSelected = adapter.getItem(adapter.getSelectedItem());
+                String fichaId = fichaSelected.getId();
+
+                Intent intent = new Intent(FichaActivity.this, CriarFichaActivity.class);
+                Bundle b = new Bundle();
+                b.putString("id", fichaId);
+                intent.putExtras(b);
+                startActivity(intent);
+                return false;
             case R.id.action_deletar:
-                int selectedItem = adapter.getSelectedItem();
-                adapter.removeData(selectedItem);
-                actionMode.finish();
+                new AlertDialog.Builder(this)
+                        .setTitle("Atenção")
+                        .setMessage("Você realmente deseja excluir esse registro?")
+                        .setIcon(R.drawable.ic_warning)
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                deletarFicha();
+                            }})
+                        .setNegativeButton("Não", null).show();
                 return true;
             default:
                 return false;
         }
+    }
+
+    public void deletarFicha () {
+        int position = adapter.getSelectedItem();
+
+        // deletar do realm
+        Ficha fichaSelected = adapter.getItem(position);
+        FichaDao.delete(fichaSelected);
+
+        // atualiza listagem
+        refreshLista();
+
+        // dispara sync
+        SyncEvent.send(SyncType.FICHAS, SyncStatus.COMPLETED);
+        SyncService.request(SyncType.FICHAS);
     }
 
     @Override
@@ -210,9 +248,15 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
             }
         } else if (event.getType() == SyncType.FICHAS && event.getStatus() == SyncStatus.COMPLETED) {
             mSwipeRefreshLayout.setRefreshing(false);
-            adapter.notifyDataSetChanged();
+            refreshLista();
         }
     }
 
+    public void refreshLista(){
+        if(actionMode!=null) {
+            actionMode.finish();
+        }
+        adapter.putData(FichaDao.getAll(realm));
+    }
 
 }

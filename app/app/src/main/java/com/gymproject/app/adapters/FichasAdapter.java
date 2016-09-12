@@ -35,16 +35,14 @@ public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewH
         this.selectedItem = -1;
     }
 
-    /**
-     * Adds and item into the underlying data set
-     * at the position passed into the method.
-     *
-     * @param newModelData The item to add to the data set.
-     * @param position The index of the item to remove.
-     */
-    public void addData(Ficha newModelData, int position) {
-        items.add(position, newModelData);
-        notifyItemInserted(position);
+    public void putData(List<Ficha> newData){
+        this.items.clear();
+        if(newData!=null && newData.size()>0){
+            for(Ficha item:newData){
+                this.items.add(item);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     /**
@@ -72,7 +70,7 @@ public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewH
     @Override
     public void onBindViewHolder(final FichaViewHolder holder, int position) {
         Ficha model = items.get(position);
-        holder.nome.setText(model.getNome());
+        holder.nome.setText(model.getNome() + " - " + model.getId());
         holder.dias_semana.setText(model.getDias_semana().replace(",", ", "));
         holder.itemView.setSelected(selectedItem == position ? true : false);
     }

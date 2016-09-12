@@ -4,7 +4,11 @@ import com.gymproject.model.Ficha;
 
 public class UpdateFicha {
 	private String acao;
+	private String mid;
 	private Ficha ficha;
+	public UpdateFicha(){
+		
+	}
 	public String getAcao() {
 		return acao;
 	}
@@ -17,5 +21,10 @@ public class UpdateFicha {
 	public void setFicha(Ficha ficha) {
 		this.ficha = ficha;
 	}
-	
+	public String getMid() {
+		return mid;
+	}
+	public void setMid(String mid) {
+		this.mid = mid;
+	}	
 }

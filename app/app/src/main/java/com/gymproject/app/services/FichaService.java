@@ -1,10 +1,8 @@
 package com.gymproject.app.services;
 
 import com.gymproject.app.classes.Status;
-import com.gymproject.app.models.Test;
 import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.models.Ficha;
-import com.gymproject.app.models.Usuario;
 
 import java.util.List;
 

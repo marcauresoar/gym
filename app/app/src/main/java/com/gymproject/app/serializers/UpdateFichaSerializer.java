@@ -13,6 +13,7 @@ public class UpdateFichaSerializer implements JsonSerializer<UpdateFicha> {
     public JsonElement serialize(UpdateFicha src, Type typeOfSrc, JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("acao", src.getAcao());
+        jsonObject.addProperty("mid", src.getMid());
         jsonObject.add("ficha", context.serialize(src.getFicha()));
         return jsonObject;
     }

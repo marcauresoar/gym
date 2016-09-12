@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 
 public class DB {
     public static void executeTransaction(@NonNull Realm.Transaction transaction) {

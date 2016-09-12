@@ -6,23 +6,24 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.gymproject.app.R;
-import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.dao.FichaDao;
-import com.gymproject.app.dao.UpdateFichaDao;
 import com.gymproject.app.models.Ficha;
 import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.sync.event.SyncEvent;
 import com.gymproject.app.sync.event.SyncStatus;
 import com.gymproject.app.sync.event.SyncType;
+import com.gymproject.app.utils.HashUtils;
 import com.gymproject.app.utils.SessionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
@@ -36,6 +37,8 @@ public class CriarFichaActivity extends AppCompatActivity {
     CheckBox chkSegunda, chkTerca, chkQuarta, chkQuinta, chkSexta, chkSabado, chkDomingo;
 
     Realm realm;
+
+    String id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +62,22 @@ public class CriarFichaActivity extends AppCompatActivity {
         chkSabado = (CheckBox) findViewById(R.id.chkSabado);
         chkDomingo = (CheckBox) findViewById(R.id.chkDomingo);
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                criarFicha();
-            }
-        });
+        Bundle b = getIntent().getExtras();
+        if(b!=null){
+            id = b.getString("id");
+        }
+
+        if(!id.isEmpty()) {
+            preencherForm();
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_criar_ficha, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -73,12 +86,15 @@ public class CriarFichaActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_salvar:
+                salvarRegistro();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void criarFicha(){
+    public void salvarRegistro(){
         String nome = edtNome.getText().toString();
         String dias_semana = buildDiasSemana();
         if(nome.isEmpty()){
@@ -90,30 +106,26 @@ public class CriarFichaActivity extends AppCompatActivity {
                     .make(coordinatorLayout, "Por favor, selecione pelo menos 1 dia da semana.", Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            realm.beginTransaction();
-
+            // cria o registro e insere no realm
             Ficha ficha = new Ficha();
+            String acao = "";
+            if(!id.isEmpty()) {
+                ficha.setId(id);
+                acao = "update";
+            }else{
+                ficha.setId(HashUtils.generateId());
+                acao = "insert";
+            }
             ficha.setNome(nome);
             ficha.setDias_semana(dias_semana);
             ficha.setUsuario(SessionUtils.getInstance(getApplicationContext()).getUsuario());
+            FichaDao.save(ficha, acao);
 
-            realm.copyToRealmOrUpdate(ficha);
-
-            UpdateFicha update = new UpdateFicha();
-            update.setAcao("insert");
-            update.setFicha(ficha);
-
-            realm.copyToRealmOrUpdate(update);
-            realm.commitTransaction();
-
-            List<UpdateFicha> list = UpdateFichaDao.getAll(Realm.getDefaultInstance());
-            System.out.println(list.size());
-
+            // dispara sync e fecha activity
             SyncEvent.send(SyncType.FICHAS, SyncStatus.COMPLETED);
             SyncService.request(SyncType.FICHAS);
             finish();
         }
-
     }
 
     public String buildDiasSemana(){
@@ -140,6 +152,35 @@ public class CriarFichaActivity extends AppCompatActivity {
             dias.add("Domingo");
         }
         return TextUtils.join(",", dias);
+    }
+
+    public void preencherForm () {
+        Ficha ficha = FichaDao.getById(realm, id);
+        edtNome.setText(ficha.getNome());
+
+        String diasSemana = ficha.getDias_semana();
+        String[] diasArray = diasSemana.split(",");
+        if(Arrays.asList(diasArray).contains("Segunda")){
+            chkSegunda.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Terça")){
+            chkTerca.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Quarta")){
+            chkQuarta.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Quinta")){
+            chkQuinta.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Sexta")){
+            chkSexta.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Sabado")){
+            chkSabado.setChecked(true);
+        }
+        if(Arrays.asList(diasArray).contains("Domingo")){
+            chkDomingo.setChecked(true);
+        }
     }
 
 }

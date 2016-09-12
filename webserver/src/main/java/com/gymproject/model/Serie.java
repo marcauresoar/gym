@@ -36,7 +36,7 @@ public class Serie implements Serializable {
 	@Column(name = "tempo", nullable = true)
 	private Integer tempo;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "exercicio_id", nullable = false)
 	private Exercicio exercicio;
 
@@ -81,11 +81,7 @@ public class Serie implements Serializable {
 		this.tempo = tempo;
 	}
 
-	public Exercicio getExercicio() {
-		return exercicio;
-	}
-
-	public void setExercicio(Exercicio exercicio) {
-		this.exercicio = exercicio;
+	public Serie() {
+		super();
 	}
 }

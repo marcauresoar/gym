@@ -18,8 +18,13 @@ public class FichaServicesImpl implements FichaServices {
 	}
 
 	@Override
-	public boolean insert(Ficha ficha) throws Exception {
-		return fichaDao.insert(ficha);
+	public boolean save(Ficha ficha) throws Exception {
+		return fichaDao.save(ficha);
+	}
+
+	@Override
+	public boolean delete(String id) throws Exception {
+		return fichaDao.delete(id);
 	}
 
 }

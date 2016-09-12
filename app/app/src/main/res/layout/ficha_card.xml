@@ -24,9 +24,12 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding"
+                android:paddingTop="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/album_title" />
+                android:textSize="@dimen/album_title"
+                android:text="teste teste teste"
+                android:layout_toRightOf="@+id/imageView3"
+                android:layout_toEndOf="@+id/imageView3" />
 
             <TextView
                 android:id="@+id/dias_semana"
@@ -36,7 +39,21 @@
                 android:paddingBottom="@dimen/songs_count_padding_bottom"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
-                android:textSize="@dimen/songs_count" />
+                android:textSize="@dimen/songs_count"
+                android:text="teste teste teste"
+                android:layout_alignLeft="@+id/nome"
+                android:layout_alignStart="@+id/nome" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView3"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_ficha"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp" />
 
         </RelativeLayout>
 
