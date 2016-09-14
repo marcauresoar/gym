@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `exercicio` (
   `id` int(11) NOT NULL,
   `nome` varchar(128) NOT NULL,
-  `grupos_musculares` varchar(256) NOT NULL,
+  `grupo_muscular` varchar(256) NOT NULL,
   `ficha_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -37,17 +37,17 @@ CREATE TABLE `exercicio` (
 -- Dumping data for table `exercicio`
 --
 
-INSERT INTO `exercicio` (`id`, `nome`, `grupos_musculares`, `ficha_id`) VALUES
-(1, 'Exercicio 1', 'Abdomen,Ombro', 1),
-(2, 'Exercicio 2', 'Triceps,Abdomen', 2),
-(3, 'Exercicio 3', 'Antebraço,Biceps', 1),
-(4, 'Exercicio 4', 'Coxa', 1),
-(5, 'Exercicio 5', 'Panturrilha', 2),
-(6, 'Exercicio 6', 'Costas', 2),
+INSERT INTO `exercicio` (`id`, `nome`, `grupo_muscular`, `ficha_id`) VALUES
+(1, 'Exercicio 1', 'Abdominal', 1),
+(2, 'Exercicio 2', 'Bíceps', 2),
+(3, 'Exercicio 3', 'Costas', 1),
+(4, 'Exercicio 4', 'Peito', 1),
+(5, 'Exercicio 5', 'Perna', 2),
+(6, 'Exercicio 6', 'Triceps', 2),
 (7, 'Exercicio 7', 'Ombro', 1),
-(8, 'Exercicio 8', 'Abdomen', 1),
-(9, 'Exercicio 9', 'Peitoral', 2),
-(10, 'Exercicio 10', 'Coxa', 1);
+(8, 'Exercicio 8', 'Bíceps', 1),
+(9, 'Exercicio 9', 'Peito', 2),
+(10, 'Exercicio 10', 'Perna', 1);
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ INSERT INTO `exercicio` (`id`, `nome`, `grupos_musculares`, `ficha_id`) VALUES
 CREATE TABLE `exercicio_treino` (
   `id` int(11) NOT NULL,
   `nome` varchar(128) NOT NULL,
-  `grupos_musculares` varchar(256) NOT NULL,
+  `grupo_muscular` varchar(256) NOT NULL,
   `treino_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

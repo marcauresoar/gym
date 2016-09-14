@@ -15,12 +15,8 @@ import retrofit2.http.Path;
 public interface FichaService {
 
     @GET("ficha/listar/{id}")
-    Call<Status<List<Ficha>>> listarFichas(@Path("id") String id);
+    Call<Status<List<Ficha>>> listar(@Path("id") String id);
 
-    @POST("ficha/updateFicha")
-    Call<Status> updateFicha(@Body List<UpdateFicha> updateFicha);
-
-    @POST("ficha/test")
-    Call<String> test(@Body Ficha usuario);
-
+    @POST("ficha/update")
+    Call<Status> update(@Body List<UpdateFicha> updateFicha);
 }

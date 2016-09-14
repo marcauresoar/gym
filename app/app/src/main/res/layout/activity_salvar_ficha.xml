@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.CriarFichaActivity"
+    tools:context=".activities.SalvarFichaActivity"
     android:id="@+id/coordinatorLayout">
 
     <android.support.design.widget.AppBarLayout
@@ -22,6 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_criar_ficha" />
+    <include layout="@layout/content_salvar_ficha" />
 
 </android.support.design.widget.CoordinatorLayout>

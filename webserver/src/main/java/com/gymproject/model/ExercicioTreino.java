@@ -30,8 +30,8 @@ public class ExercicioTreino implements Serializable {
 	@Column(name = "nome", nullable = false, length = 64)
 	private String nome;
 	
-	@Column(name = "grupos_musculares", unique = true, nullable = false, length = 256)
-	private String grupos_musculares;
+	@Column(name = "grupo_muscular", unique = true, nullable = false, length = 32)
+	private String grupo_muscular;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "treino_id", nullable = false)
@@ -53,12 +53,12 @@ public class ExercicioTreino implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getGrupos_musculares() {
-		return grupos_musculares;
+	public String getGrupo_muscular() {
+		return grupo_muscular;
 	}
 
-	public void setGrupos_musculares(String grupos_musculares) {
-		this.grupos_musculares = grupos_musculares;
+	public void setGrupo_muscular(String grupo_muscular) {
+		this.grupo_muscular = grupo_muscular;
 	}
 
 	public Treino getTreino() {

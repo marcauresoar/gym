@@ -13,13 +13,13 @@ public class FichaServicesImpl implements FichaServices {
 	FichaDao fichaDao;
 	
 	@Override
-	public List<Ficha> listarFichas(String id) throws Exception {
-		return fichaDao.listarFichas(id);
+	public List<Ficha> listar(String id) throws Exception {
+		return fichaDao.listar(id);
 	}
 
 	@Override
-	public boolean save(Ficha ficha) throws Exception {
-		return fichaDao.save(ficha);
+	public boolean save(Ficha dados) throws Exception {
+		return fichaDao.save(dados);
 	}
 
 	@Override

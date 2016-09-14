@@ -30,15 +30,12 @@ public class Exercicio implements Serializable {
 	@Column(name = "nome", nullable = false, length = 64)
 	private String nome;
 	
-	@Column(name = "grupos_musculares", unique = true, nullable = false, length = 256)
-	private String grupos_musculares;
+	@Column(name = "grupo_muscular", unique = true, nullable = false, length = 32)
+	private String grupo_muscular;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ficha_id", nullable = false)
 	private Ficha ficha;
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "exercicio")
-	private Set<Serie> series = new HashSet<Serie>(0);
 
 	public Long getId() {
 		return id;
@@ -55,22 +52,22 @@ public class Exercicio implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public String getGrupos_musculares() {
-		return grupos_musculares;
+	
+	public String getGrupo_muscular() {
+		return grupo_muscular;
 	}
 
-	public void setGrupos_musculares(String grupos_musculares) {
-		this.grupos_musculares = grupos_musculares;
+	public void setGrupo_muscular(String grupo_muscular) {
+		this.grupo_muscular = grupo_muscular;
 	}
 
-	public Set<Serie> getSeries() {
-		return series;
+	public Ficha getFicha() {
+		return ficha;
 	}
 
-	public void setSeries(Set<Serie> series) {
-		this.series = series;
-	}	
+	public void setFicha(Ficha ficha) {
+		this.ficha = ficha;
+	}
 	
 	public Exercicio() {
 		super();

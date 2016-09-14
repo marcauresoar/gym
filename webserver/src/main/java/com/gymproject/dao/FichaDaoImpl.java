@@ -21,7 +21,7 @@ public class FichaDaoImpl implements FichaDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ficha> listarFichas(String id) throws Exception {
+	public List<Ficha> listar(String id) throws Exception {
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		
@@ -35,10 +35,10 @@ public class FichaDaoImpl implements FichaDao {
 	}
 	
 	@Override
-	public boolean save(Ficha ficha) throws Exception {
+	public boolean save(Ficha dados) throws Exception {
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
-		session.saveOrUpdate(ficha);
+		session.saveOrUpdate(dados);
 		tx.commit();
 		session.close();
 		return false;

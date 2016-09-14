@@ -14,7 +14,6 @@ public class Ficha extends RealmObject implements Serializable {
     private String nome;
     private String dias_semana;
     private Usuario usuario;
-    private RealmList<Exercicio> exercicios;
 
     public Ficha() {
     }
@@ -51,11 +50,4 @@ public class Ficha extends RealmObject implements Serializable {
         this.usuario = usuario;
     }
 
-    public RealmList<Exercicio> getExercicios() {
-        return exercicios;
-    }
-
-    public void setExercicios(RealmList<Exercicio> exercicios) {
-        this.exercicios = exercicios;
-    }
 }
