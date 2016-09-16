@@ -63,4 +63,10 @@
 	<bean id="fichaDao" class="com.gymproject.dao.FichaDaoImpl"></bean>
 	<bean id="fichaServices" class="com.gymproject.services.FichaServicesImpl"></bean>
 	
+	<bean id="exercicioDao" class="com.gymproject.dao.ExercicioDaoImpl"></bean>
+	<bean id="exercicioServices" class="com.gymproject.services.ExercicioServicesImpl"></bean>
+	
+	<bean id="serieDao" class="com.gymproject.dao.SerieDaoImpl"></bean>
+	<bean id="serieServices" class="com.gymproject.services.SerieServicesImpl"></bean>
+	
 </beans>

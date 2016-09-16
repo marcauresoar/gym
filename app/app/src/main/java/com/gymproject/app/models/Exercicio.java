@@ -12,8 +12,8 @@ public class Exercicio extends RealmObject implements Serializable {
     private String id;
 
     private String nome;
-    private String grupos_musculares;
-    private RealmList<Serie> series;
+    private String grupo_muscular;
+    private Ficha ficha;
 
     public Exercicio() {
     }
@@ -34,19 +34,19 @@ public class Exercicio extends RealmObject implements Serializable {
         this.nome = nome;
     }
 
-    public String getGrupos_musculares() {
-        return grupos_musculares;
+    public String getGrupo_muscular() {
+        return grupo_muscular;
     }
 
-    public void setGrupos_musculares(String grupos_musculares) {
-        this.grupos_musculares = grupos_musculares;
+    public void setGrupo_muscular(String grupo_muscular) {
+        this.grupo_muscular = grupo_muscular;
     }
 
-    public RealmList<Serie> getSeries() {
-        return series;
+    public Ficha getFicha() {
+        return ficha;
     }
 
-    public void setSeries(RealmList<Serie> series) {
-        this.series = series;
+    public void setFicha(Ficha ficha) {
+        this.ficha = ficha;
     }
 }

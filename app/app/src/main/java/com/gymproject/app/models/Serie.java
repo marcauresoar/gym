@@ -13,6 +13,7 @@ public class Serie extends RealmObject implements Serializable {
     private int repeticoes;
     private int peso;
     private int tempo;
+    private Exercicio exercicio;
 
     public Serie() {
     }
@@ -55,5 +56,13 @@ public class Serie extends RealmObject implements Serializable {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
+    }
+
+    public Exercicio getExercicio() {
+        return exercicio;
+    }
+
+    public void setExercicio(Exercicio exercicio) {
+        this.exercicio = exercicio;
     }
 }

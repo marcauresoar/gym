@@ -27,16 +27,16 @@ public class FichaController {
 	@RequestMapping(value = "/listar/{id}", method = RequestMethod.GET)
 	public @ResponseBody Status listar(@PathVariable("id") String id) {
 		try {
-			List<Ficha> fichas = fichaServices.listarFichas(id);
-			return new Status(1, "Fichas listadas com sucesso!", fichas);
+			List<Ficha> dados = fichaServices.listar(id);
+			return new Status(1, "Fichas listadas com sucesso!", dados);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new Status(0, "Houve um erro ao tentar realizar esta ação!", null);
 	}
 
-	@RequestMapping(value = "/updateFicha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Status updateFicha(@RequestBody List<UpdateFicha> updates) {
+	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Status update(@RequestBody List<UpdateFicha> updates) {
 
 		if (updates.size() > 0) {
 			int erros = 0, sucessos = 0;
@@ -66,11 +66,6 @@ public class FichaController {
 		}
 
 		return new Status(1, "Nenhum update a ser realizado!", null);
-	}
-	
-	@RequestMapping(value = "/test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String test(@RequestBody Usuario usuario) {
-		return "User: " + usuario.getNome();
 	}
 
 }

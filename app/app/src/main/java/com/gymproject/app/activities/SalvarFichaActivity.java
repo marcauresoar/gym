@@ -28,7 +28,7 @@ import java.util.List;
 
 import io.realm.Realm;
 
-public class CriarFichaActivity extends AppCompatActivity {
+public class SalvarFichaActivity extends AppCompatActivity {
 
     Snackbar snackbar;
     CoordinatorLayout coordinatorLayout;
@@ -43,7 +43,7 @@ public class CriarFichaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_criar_ficha);
+        setContentView(R.layout.activity_salvar_ficha);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

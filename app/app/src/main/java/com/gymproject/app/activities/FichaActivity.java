@@ -23,10 +23,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.gymproject.app.R;
-import com.gymproject.app.adapters.FichasAdapter;
+import com.gymproject.app.adapters.FichaAdapter;
 import com.gymproject.app.dao.FichaDao;
 import com.gymproject.app.models.Ficha;
-import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.sync.event.EventBusManager;
 import com.gymproject.app.sync.event.SyncEvent;
@@ -36,8 +35,6 @@ import com.gymproject.app.sync.event.SyncType;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
 import io.realm.Realm;
 
 public class FichaActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener,
@@ -45,7 +42,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
         android.view.ActionMode.Callback {
 
     RecyclerView recyclerView;
-    FichasAdapter adapter;
+    FichaAdapter adapter;
     int lastSelectedItem = -1;
     GestureDetectorCompat gestureDetector;
     android.view.ActionMode actionMode;
@@ -73,7 +70,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        adapter = new FichasAdapter(FichaDao.getAll(realm));
+        adapter = new FichaAdapter(FichaDao.getAll(realm));
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -94,7 +91,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(FichaActivity.this, CriarFichaActivity.class);
+                Intent intent = new Intent(FichaActivity.this, SalvarFichaActivity.class);
                 startActivity(intent);
             }
         });
@@ -158,7 +155,7 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
                 Ficha fichaSelected = adapter.getItem(adapter.getSelectedItem());
                 String fichaId = fichaSelected.getId();
 
-                Intent intent = new Intent(FichaActivity.this, CriarFichaActivity.class);
+                Intent intent = new Intent(FichaActivity.this, SalvarFichaActivity.class);
                 Bundle b = new Bundle();
                 b.putString("id", fichaId);
                 intent.putExtras(b);
@@ -217,6 +214,17 @@ public class FichaActivity extends AppCompatActivity implements RecyclerView.OnI
                     return false;
                 }
                 actionMode.finish();
+            } else {
+                if(idx>=0) {
+                    Ficha fichaSelected = adapter.getItem(idx);
+                    String fichaId = fichaSelected.getId();
+
+                    Intent intent = new Intent(FichaActivity.this, ExercicioActivity.class);
+                    Bundle b = new Bundle();
+                    b.putString("id", fichaId);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
             }
             return super.onSingleTapConfirmed(e);
         }

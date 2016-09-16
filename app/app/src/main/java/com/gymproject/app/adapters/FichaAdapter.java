@@ -1,6 +1,5 @@
 package com.gymproject.app.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,26 +7,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gymproject.app.R;
+import com.gymproject.app.dao.ExercicioDao;
+import com.gymproject.app.models.Exercicio;
 import com.gymproject.app.models.Ficha;
 
 import java.util.List;
 
-public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewHolder> {
+import io.realm.Realm;
+
+public class FichaAdapter extends RecyclerView.Adapter<FichaAdapter.FichaViewHolder> {
 
     private List<Ficha> items;
     private int selectedItem;
 
     public class FichaViewHolder extends RecyclerView.ViewHolder {
-        public TextView nome, dias_semana;
+        public TextView nome, dias_semana, num_exercicios;
 
         public FichaViewHolder(final View view) {
             super(view);
             nome = (TextView) view.findViewById(R.id.nome);
             dias_semana = (TextView) view.findViewById(R.id.dias_semana);
+            num_exercicios = (TextView) view.findViewById(R.id.num_exercicios);
         }
     }
 
-    public FichasAdapter(List<Ficha> items) {
+    public FichaAdapter(List<Ficha> items) {
         if (items == null) {
             throw new IllegalArgumentException("modelData must not be null");
         }
@@ -63,16 +67,27 @@ public class FichasAdapter extends RecyclerView.Adapter<FichasAdapter.FichaViewH
     @Override
     public FichaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ficha_card, parent, false);
+                .inflate(R.layout.card_ficha, parent, false);
         return new FichaViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final FichaViewHolder holder, int position) {
         Ficha model = items.get(position);
-        holder.nome.setText(model.getNome() + " - " + model.getId());
+        holder.nome.setText(model.getNome());
         holder.dias_semana.setText(model.getDias_semana().replace(",", ", "));
         holder.itemView.setSelected(selectedItem == position ? true : false);
+        List<Exercicio> exercicios = ExercicioDao.getAll(Realm.getDefaultInstance(), model.getId());
+        int num_exercicios = exercicios.size();
+        String msg_exercicio = "";
+        if(num_exercicios == 0){
+            msg_exercicio = "Nenhum exercício cadastrado.";
+        } else if (num_exercicios== 1){
+            msg_exercicio = "1 exercício cadastrado.";
+        } else {
+            msg_exercicio = num_exercicios + " exercícios cadastrados.";
+        }
+        holder.num_exercicios.setText(msg_exercicio);
     }
 
 

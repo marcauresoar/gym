@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.gymproject.app.classes.Status;
+import com.gymproject.app.models.Exercicio;
 import com.gymproject.app.models.UpdateFicha;
 import com.gymproject.app.dao.FichaDao;
 import com.gymproject.app.dao.UpdateFichaDao;
@@ -44,14 +45,11 @@ class FichasSync extends AbsSync {
         Log.i("FichasSync", "execute post method");
 
         List<UpdateFicha> updates = UpdateFichaDao.getAll(Realm.getDefaultInstance());
-        if(updates.size()>0){
-            System.out.println(updates.get(0).getMid());
-        }
 
         FichaService apiService =
                 RestfulAPI.getClient().create(FichaService.class);
 
-        Call<Status> call = apiService.updateFicha(updates);
+        Call<Status> call = apiService.update(updates);
         call.enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status>call, Response<Status> response) {
@@ -81,7 +79,7 @@ class FichasSync extends AbsSync {
         FichaService apiService =
                 RestfulAPI.getClient().create(FichaService.class);
 
-        Call<Status<List<Ficha>>> call = apiService.listarFichas(SessionUtils.getInstance(context).getIdUsuario());
+        Call<Status<List<Ficha>>> call = apiService.listar(SessionUtils.getInstance(context).getIdUsuario());
         call.enqueue(new Callback<Status<List<Ficha>>>() {
             @Override
             public void onResponse(Call<Status<List<Ficha>>>call, Response<Status<List<Ficha>>> response) {
