@@ -109,28 +109,27 @@ public class ExercicioAdapter extends RecyclerView.Adapter<ExercicioAdapter.Exer
         LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         List<Serie> series = SerieDao.getAll(Realm.getDefaultInstance(), model.getId());
+        holder.container_series.removeAllViews();
         if(series.size() > 0 ){
-            holder.container_series.removeAllViews();
+            for(Serie serie : series){
+                View v = vi.inflate(R.layout.view_serie, null);
 
-        for(Serie serie : series){
-            View v = vi.inflate(R.layout.view_serie, null);
+                ImageView imgSerie = (ImageView) v.findViewById(R.id.imgSerie);
+                if(serie.getTipo().equals("tempo")) {
+                    imgSerie.setImageResource(R.drawable.ic_tempo);
+                } else if(serie.getTipo().equals("peso")) {
+                    imgSerie.setImageResource(R.drawable.ic_peso);
+                }
 
-            ImageView imgSerie = (ImageView) v.findViewById(R.id.imgSerie);
-            if(serie.getTipo().equals("tempo")) {
-                imgSerie.setImageResource(R.drawable.ic_tempo);
-            } else if(serie.getTipo().equals("peso")) {
-                imgSerie.setImageResource(R.drawable.ic_peso);
+                TextView textSerie = (TextView) v.findViewById(R.id.txtSerie);
+                if(serie.getTipo().equals("tempo")) {
+                    textSerie.setText(serie.getTempo() + "s");
+                } else if(serie.getTipo().equals("peso")) {
+                    textSerie.setText(serie.getRepeticoes() + "x de " + serie.getPeso() + "kg");
+                }
+
+                holder.container_series.addView(v);
             }
-
-            TextView textSerie = (TextView) v.findViewById(R.id.txtSerie);
-            if(serie.getTipo().equals("tempo")) {
-                textSerie.setText(serie.getTempo() + "s");
-            } else if(serie.getTipo().equals("peso")) {
-                textSerie.setText(serie.getRepeticoes() + "x de " + serie.getPeso() + "kg");
-            }
-
-            holder.container_series.addView(v);
-        }
         }
     }
 

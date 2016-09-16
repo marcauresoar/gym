@@ -266,11 +266,11 @@ public class ExercicioActivity extends AppCompatActivity  implements RecyclerVie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SyncEvent event) {
-        if (event.getType() == SyncType.EXERCICIOS && event.getStatus() == SyncStatus.IN_PROGRESS) {
+        if ((event.getType() == SyncType.EXERCICIOS || event.getType() == SyncType.SERIES) && event.getStatus() == SyncStatus.IN_PROGRESS) {
             if (!mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(true);
             }
-        } else if (event.getType() == SyncType.EXERCICIOS && event.getStatus() == SyncStatus.COMPLETED) {
+        } else if (event.getType() == SyncType.SERIES && event.getStatus() == SyncStatus.COMPLETED) {
             mSwipeRefreshLayout.setRefreshing(false);
             refreshLista();
         }
