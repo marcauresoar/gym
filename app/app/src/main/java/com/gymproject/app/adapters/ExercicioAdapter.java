@@ -128,6 +128,7 @@ public class ExercicioAdapter extends RecyclerView.Adapter<ExercicioAdapter.Exer
         LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         List<Serie> series = SerieDao.getAll(Realm.getDefaultInstance(), model.getId());
+        holder.container_series.removeAllViews();
         if(series.size() > 0 ){
             holder.container_series.removeAllViews();
 
