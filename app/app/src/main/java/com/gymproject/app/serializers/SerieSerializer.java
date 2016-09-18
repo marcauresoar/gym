@@ -15,8 +15,9 @@ public class SerieSerializer implements JsonSerializer<Serie> {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", src.getId());
         jsonObject.addProperty("tipo", src.getTipo());
-        jsonObject.addProperty("repeticoes", src.getRepeticoes());
         jsonObject.addProperty("tempo", src.getTempo());
+        jsonObject.addProperty("repeticoes", src.getRepeticoes());
+        jsonObject.addProperty("peso", src.getPeso());
         jsonObject.add("exercicio", context.serialize(src.getExercicio()));
         return jsonObject;
     }

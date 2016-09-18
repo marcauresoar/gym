@@ -56,7 +56,7 @@
                 android:paddingLeft="5dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/container_series"
                 android:layout_below="@+id/grupo_muscular"
@@ -65,8 +65,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
-                android:paddingBottom="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,6 +87,15 @@
                     android:visibility="gone"/>
             </LinearLayout>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adicionar nova série"
+                android:id="@+id/btnAddSerie"
+                android:layout_below="@+id/container_series"
+                android:layout_toRightOf="@+id/imgExercicio"
+                android:layout_toEndOf="@+id/imgExercicio"
+                android:layout_marginBottom="@dimen/album_title_padding"/>
 
 
         </RelativeLayout>

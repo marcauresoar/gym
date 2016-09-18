@@ -16,10 +16,10 @@ import java.util.ArrayList;
 
 public class CustomSpinnerAdapter extends ArrayAdapter<ItemData> {
     int groupid;
-    Activity context;
+    Context context;
     ArrayList<ItemData> list;
     LayoutInflater inflater;
-    public CustomSpinnerAdapter(Activity context, int groupid, int id, ArrayList<ItemData>
+    public CustomSpinnerAdapter(Context context, int groupid, int id, ArrayList<ItemData>
             list){
         super(context,id,list);
         this.list=list;

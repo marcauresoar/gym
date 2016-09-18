@@ -10,9 +10,9 @@ public class Serie extends RealmObject implements Serializable {
     private String id;
 
     private String tipo;
+    private int tempo;
     private int repeticoes;
     private int peso;
-    private int tempo;
     private Exercicio exercicio;
 
     public Serie() {
