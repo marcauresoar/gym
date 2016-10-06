@@ -62,6 +62,18 @@ CREATE TABLE `exercicio_treino` (
   `treino_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `exercicio_treino` (`id`, `nome`, `grupo_muscular`, `treino_id`) VALUES
+(1, 'Exercicio 1', 'Abdominal', 1),
+(2, 'Exercicio 2', 'Bíceps', 2),
+(3, 'Exercicio 3', 'Costas', 1),
+(4, 'Exercicio 4', 'Peito', 1),
+(5, 'Exercicio 5', 'Perna', 2),
+(6, 'Exercicio 6', 'Triceps', 2),
+(7, 'Exercicio 7', 'Ombro', 1),
+(8, 'Exercicio 8', 'Bíceps', 1),
+(9, 'Exercicio 9', 'Peito', 2),
+(10, 'Exercicio 10', 'Perna', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -146,8 +158,42 @@ CREATE TABLE `serie_treino` (
   `repeticoes` int(11) DEFAULT NULL,
   `peso` int(11) DEFAULT NULL,
   `tempo` int(11) DEFAULT NULL,
+  `feito` boolean NOT NULL,
   `exercicio_treino_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO `serie_treino` (`id`, `tipo`, `repeticoes`, `peso`, `tempo`, `exercicio_treino_id`, `feito`) VALUES
+(1, 'peso', 10, 8, NULL, 1, 1),
+(2, 'peso', 10, 8, NULL, 1, 1),
+(3, 'peso', 10, 8, NULL, 1, 0),
+(4, 'peso', 10, 12, NULL, 2, 1),
+(5, 'peso', 10, 12, NULL, 2, 0),
+(6, 'peso', 10, 12, NULL, 2, 0),
+(7, 'peso', 5, 12, NULL, 3, 1),
+(8, 'peso', 5, 12, NULL, 3, 1),
+(9, 'peso', 5, 12, NULL, 3, 1),
+(10, 'peso', 10, 10, NULL, 4, 0),
+(11, 'peso', 10, 10, NULL, 4, 0),
+(12, 'peso', 10, 10, NULL, 4, 0),
+(13, 'peso', 10, 20, NULL, 5, 1),
+(14, 'peso', 10, 20, NULL, 5, 1),
+(15, 'peso', 10, 20, NULL, 5, 1),
+(16, 'peso', 10, 4, NULL, 6, 1),
+(17, 'peso', 10, 4, NULL, 6, 1),
+(18, 'peso', 10, 4, NULL, 6, 0),
+(19, 'tempo', NULL, NULL, 20, 7, 1),
+(20, 'tempo', NULL, NULL, 20, 7, 1),
+(21, 'tempo', NULL, NULL, 20, 7, 1),
+(22, 'tempo', NULL, NULL, 30, 8, 0),
+(23, 'tempo', NULL, NULL, 30, 8, 1),
+(24, 'tempo', NULL, NULL, 30, 8, 1),
+(25, 'tempo', NULL, NULL, 20, 9, 0),
+(26, 'tempo', NULL, NULL, 20, 9, 1),
+(27, 'tempo', NULL, NULL, 20, 9, 1),
+(28, 'tempo', NULL, NULL, 10, 10, 0),
+(29, 'tempo', NULL, NULL, 10, 10, 1),
+(30, 'tempo', NULL, NULL, 10, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -162,6 +208,10 @@ CREATE TABLE `treino` (
   `hora_fim` time DEFAULT NULL,
   `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `treino` (`id`, `data`, `hora_inicio`, `hora_fim`, `usuario_id`) VALUES
+(1, '2016-10-06', '06:20:00', '08:10:00', 1),
+(2, '2016-10-10', '15:00:00', '18:20:00', 1);
 
 -- --------------------------------------------------------
 
