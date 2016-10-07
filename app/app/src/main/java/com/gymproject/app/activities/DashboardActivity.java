@@ -69,7 +69,8 @@ public class DashboardActivity extends AppCompatActivity
             Intent intent = new Intent(this, FichaActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_treino) {
-
+            Intent intent = new Intent(this, TreinoActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_aval) {
 
         } else if (id == R.id.nav_sair) {

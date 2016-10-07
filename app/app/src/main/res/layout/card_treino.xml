@@ -32,7 +32,7 @@
                 android:layout_toEndOf="@+id/imageView3" />
 
             <TextView
-                android:id="@+id/dias_semana"
+                android:id="@+id/hora"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/data"
@@ -49,10 +49,10 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="teste teste teste"
-                android:id="@+id/num_exercicios"
-                android:layout_below="@+id/dias_semana"
-                android:layout_alignLeft="@+id/dias_semana"
-                android:layout_alignStart="@+id/dias_semana"
+                android:id="@+id/info"
+                android:layout_below="@+id/hora"
+                android:layout_alignLeft="@+id/hora"
+                android:layout_alignStart="@+id/hora"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingBottom="@dimen/album_title_padding"

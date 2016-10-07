@@ -23,9 +23,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.gymproject.app.R;
-import com.gymproject.app.adapters.FichaAdapter;
-import com.gymproject.app.dao.FichaDao;
-import com.gymproject.app.models.Ficha;
+import com.gymproject.app.adapters.TreinoAdapter;
+import com.gymproject.app.dao.TreinoDao;
+import com.gymproject.app.models.Treino;
 import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.sync.event.EventBusManager;
 import com.gymproject.app.sync.event.SyncEvent;
@@ -35,6 +35,11 @@ import com.gymproject.app.sync.event.SyncType;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import io.realm.Realm;
 
 public class TreinoActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener,
@@ -42,7 +47,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
         android.view.ActionMode.Callback {
 
     RecyclerView recyclerView;
-    FichaAdapter adapter;
+    TreinoAdapter adapter;
     int lastSelectedItem = -1;
     GestureDetectorCompat gestureDetector;
     android.view.ActionMode actionMode;
@@ -56,7 +61,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ficha);
+        setContentView(R.layout.activity_treino);
 
         realm = Realm.getDefaultInstance();
         EventBusManager.register(this);
@@ -70,7 +75,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        adapter = new FichaAdapter(FichaDao.getAll(realm));
+        adapter = new TreinoAdapter(TreinoDao.getAll(realm));
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -82,7 +87,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                SyncService.request(SyncType.FICHAS);
+                SyncService.request(SyncType.TREINOS);
             }
         });
 
@@ -91,7 +96,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(TreinoActivity.this, SalvarFichaActivity.class);
+                Intent intent = new Intent(TreinoActivity.this, SalvarTreinoActivity.class);
                 startActivity(intent);
             }
         });
@@ -116,8 +121,38 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
     private void myToggleSelection(int idx) {
         adapter.toggleSelection(idx);
         lastSelectedItem = idx;
-        String title = "Ficha: " + adapter.getItem(idx).getNome();
+        String dataFormatada = "", nomeDia = "";
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = formatter.parse(adapter.getItem(idx).getData());
+            dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            nomeDia = new SimpleDateFormat("EEEE").format(date);
+            nomeDia = traduzirDiaSemana(nomeDia);
+            dataFormatada += " (" + nomeDia + ")";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String title = "Treino: " + dataFormatada;
         actionMode.setTitle(title);
+    }
+
+    public String traduzirDiaSemana (String nomeDia){
+        if(nomeDia.equals("Sunday")){
+            nomeDia = "Domingo";
+        } else if(nomeDia.equals("Monday")){
+            nomeDia = "Segunda feira";
+        } else if(nomeDia.equals("Tuesday")){
+            nomeDia = "Terça feira";
+        } else if(nomeDia.equals("Wednesday")){
+            nomeDia = "Quarta feira";
+        } else if(nomeDia.equals("Thursday")){
+            nomeDia = "Quinta feira";
+        } else if(nomeDia.equals("Friday")){
+            nomeDia = "Sexta feira";
+        } else if(nomeDia.equals("Saturday")){
+            nomeDia = "Sábado";
+        }
+        return nomeDia;
     }
 
     @Override
@@ -139,7 +174,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
     public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
         // Inflate a menu resource providing context menu items
         MenuInflater inflater = actionMode.getMenuInflater();
-        inflater.inflate(R.menu.menu_ficha_item, menu);
+        inflater.inflate(R.menu.menu_treino_item, menu);
         return true;
     }
 
@@ -152,7 +187,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_editar:
-                Ficha fichaSelected = adapter.getItem(adapter.getSelectedItem());
+                Treino fichaSelected = adapter.getItem(adapter.getSelectedItem());
                 String fichaId = fichaSelected.getId();
 
                 Intent intent = new Intent(TreinoActivity.this, SalvarFichaActivity.class);
@@ -181,15 +216,15 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
         int position = adapter.getSelectedItem();
 
         // deletar do realm
-        Ficha fichaSelected = adapter.getItem(position);
-        FichaDao.delete(fichaSelected);
+        Treino fichaSelected = adapter.getItem(position);
+        TreinoDao.delete(fichaSelected);
 
         // atualiza listagem
         refreshLista();
 
         // dispara sync
-        SyncEvent.send(SyncType.FICHAS, SyncStatus.COMPLETED);
-        SyncService.request(SyncType.FICHAS);
+        SyncEvent.send(SyncType.TREINOS, SyncStatus.COMPLETED);
+        SyncService.request(SyncType.TREINOS);
     }
 
     @Override
@@ -216,7 +251,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
                 actionMode.finish();
             } else {
                 if(idx>=0) {
-                    Ficha fichaSelected = adapter.getItem(idx);
+                    Treino fichaSelected = adapter.getItem(idx);
                     String fichaId = fichaSelected.getId();
 
                     Intent intent = new Intent(TreinoActivity.this, ExercicioActivity.class);
@@ -250,11 +285,11 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SyncEvent event) {
-        if (event.getType() == SyncType.FICHAS && event.getStatus() == SyncStatus.IN_PROGRESS) {
+        if (event.getType() == SyncType.TREINOS && event.getStatus() == SyncStatus.IN_PROGRESS) {
             if (!mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(true);
             }
-        } else if (event.getType() == SyncType.FICHAS && event.getStatus() == SyncStatus.COMPLETED) {
+        } else if (event.getType() == SyncType.TREINOS && event.getStatus() == SyncStatus.COMPLETED) {
             mSwipeRefreshLayout.setRefreshing(false);
             refreshLista();
         }
@@ -264,7 +299,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
         if(actionMode!=null) {
             actionMode.finish();
         }
-        adapter.putData(FichaDao.getAll(realm));
+        adapter.putData(TreinoDao.getAll(realm));
     }
 
 }

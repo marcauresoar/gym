@@ -9,6 +9,10 @@ import android.widget.TextView;
 import com.gymproject.app.R;
 import com.gymproject.app.models.Treino;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import io.realm.Realm;
@@ -19,13 +23,13 @@ public class TreinoAdapter extends RecyclerView.Adapter<TreinoAdapter.FichaViewH
     private int selectedItem;
 
     public class FichaViewHolder extends RecyclerView.ViewHolder {
-        public TextView nome, dias_semana, num_exercicios;
+        public TextView data, hora, info;
 
         public FichaViewHolder(final View view) {
             super(view);
-            nome = (TextView) view.findViewById(R.id.nome);
-            dias_semana = (TextView) view.findViewById(R.id.dias_semana);
-            num_exercicios = (TextView) view.findViewById(R.id.num_exercicios);
+            data = (TextView) view.findViewById(R.id.data);
+            hora = (TextView) view.findViewById(R.id.hora);
+            info = (TextView) view.findViewById(R.id.info);
         }
     }
 
@@ -65,27 +69,53 @@ public class TreinoAdapter extends RecyclerView.Adapter<TreinoAdapter.FichaViewH
     @Override
     public FichaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_ficha, parent, false);
+                .inflate(R.layout.card_treino, parent, false);
         return new FichaViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final FichaViewHolder holder, int position) {
         Treino model = items.get(position);
-        holder.nome.setText(model.getNome());
-        holder.dias_semana.setText(model.getDias_semana().replace(",", ", "));
-        holder.itemView.setSelected(selectedItem == position ? true : false);
-        List<Exercicio> exercicios = ExercicioDao.getAll(Realm.getDefaultInstance(), model.getId());
-        int num_exercicios = exercicios.size();
-        String msg_exercicio = "";
-        if(num_exercicios == 0){
-            msg_exercicio = "Nenhum exercício cadastrado.";
-        } else if (num_exercicios== 1){
-            msg_exercicio = "1 exercício cadastrado.";
-        } else {
-            msg_exercicio = num_exercicios + " exercícios cadastrados.";
+
+        String dataFormatada = "", nomeDia = "";
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = formatter.parse(model.getData());
+            dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            nomeDia = new SimpleDateFormat("EEEE").format(date);
+            nomeDia = traduzirDiaSemana(nomeDia);
+            dataFormatada += " (" + nomeDia + ")";
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        holder.num_exercicios.setText(msg_exercicio);
+
+        holder.data.setText(dataFormatada);
+        String hora = "Início: " + model.getHora_inicio().substring(0,5) + "h";
+        if(!model.getHora_fim().isEmpty()){
+            hora += " - Fim: " + model.getHora_fim().substring(0,5) + "h";
+        }
+        holder.hora.setText(hora);
+        holder.info.setText("--");
+        holder.itemView.setSelected(selectedItem == position ? true : false);
+    }
+
+    public String traduzirDiaSemana (String nomeDia){
+        if(nomeDia.equals("Sunday")){
+            nomeDia = "Domingo";
+        } else if(nomeDia.equals("Monday")){
+            nomeDia = "Segunda feira";
+        } else if(nomeDia.equals("Tuesday")){
+            nomeDia = "Terça feira";
+        } else if(nomeDia.equals("Wednesday")){
+            nomeDia = "Quarta feira";
+        } else if(nomeDia.equals("Thursday")){
+            nomeDia = "Quinta feira";
+        } else if(nomeDia.equals("Friday")){
+            nomeDia = "Sexta feira";
+        } else if(nomeDia.equals("Saturday")){
+            nomeDia = "Sábado";
+        }
+        return nomeDia;
     }
 
 

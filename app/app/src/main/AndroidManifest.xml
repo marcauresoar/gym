@@ -36,6 +36,10 @@
             android:name=".activities.SalvarFichaActivity"
             android:label="@string/title_activity_gerenciar_ficha"
             android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activities.SalvarTreinoActivity"
+            android:label="@string/title_activity_gerenciar_treino"
+            android:theme="@style/MyMaterialTheme" />
 
         <service android:name=".sync.SyncService" />
 

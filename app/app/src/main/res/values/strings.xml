@@ -9,4 +9,5 @@
     <string name="title_activity_exercicio">Salvar Exercício</string>
 
     <string name="title_activity_treino">Treinos</string>
+    <string name="title_activity_gerenciar_treino">Salvar Treino</string>
 </resources>
