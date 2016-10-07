@@ -234,6 +234,44 @@ INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`) VALUES
 (1, 'marco', 'marco@gmail.com', '202cb962ac59075b964b07152d234b70'),
 (2, 'aurelio', 'aurelio@gmail.com', '202cb962ac59075b964b07152d234b70');
 
+
+-- -----------------------------------------------------
+-- Table `gym`.`avaliacao`
+-- -----------------------------------------------------
+CREATE TABLE `avaliacao` (
+  `id` int(11) NOT NULL,
+  `altura` FLOAT NOT NULL,
+  `peso` FLOAT NOT NULL,
+  `peitoral` FLOAT NULL,
+  `biceps` FLOAT NULL,
+  `triceps` FLOAT NULL,
+  `subescapular` FLOAT NULL,
+  `supra_iliaca` FLOAT NULL,
+  `axiliar_media` FLOAT NULL,
+  `abdominal` FLOAT NULL,
+  `coxa` FLOAT NULL,
+  `panturrilha_media` FLOAT NULL,
+  `torax` FLOAT NULL,
+  `abdomen` FLOAT NULL,
+  `cintura` FLOAT NULL,
+  `quadril` FLOAT NULL,
+  `braco_direito` FLOAT NULL,
+  `braco_esquerdo` FLOAT NULL,
+  `antebraco_direito` FLOAT NULL,
+  `antebraco_esquerdo` FLOAT NULL,
+  `coxa_direita` FLOAT NULL,
+  `coxa_esquerda` FLOAT NULL,
+  `perna_direita` FLOAT NULL,
+  `perna_esquerda` FLOAT NULL,
+  `ombro` FLOAT NULL,
+  `pescoco` FLOAT NULL,
+  `punho` FLOAT NULL,
+  `joelho` FLOAT NULL,
+  `tornozelo` FLOAT NULL,
+  `usuario_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 --
 -- Indexes for dumped tables
 --
@@ -280,6 +318,11 @@ ALTER TABLE `treino`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_treino_usuario1_idx` (`usuario_id`);
 
+
+ALTER TABLE `avaliacao`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_avaliacao_usuario1_idx` (`usuario_id`);
+
 --
 -- Indexes for table `usuario`
 --
@@ -320,6 +363,9 @@ ALTER TABLE `serie_treino`
 -- AUTO_INCREMENT for table `treino`
 --
 ALTER TABLE `treino`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `avaliacao`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `usuario`
@@ -365,6 +411,9 @@ ALTER TABLE `serie_treino`
 --
 ALTER TABLE `treino`
   ADD CONSTRAINT `fk_treino_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+  ALTER TABLE `avaliacao`
+  ADD CONSTRAINT `fk_avaliacao_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

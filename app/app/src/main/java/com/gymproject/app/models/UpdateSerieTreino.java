@@ -3,14 +3,14 @@ package com.gymproject.app.models;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class UpdateFicha extends RealmObject {
+public class UpdateSerieTreino extends RealmObject {
     @PrimaryKey
     private String id;
     private String acao;
     private String mid;
-    private Ficha ficha;
+    private SerieTreino serie_treino;
 
-    public UpdateFicha(){};
+    public UpdateSerieTreino(){};
 
     public String getAcao() {
         return acao;
@@ -28,12 +28,12 @@ public class UpdateFicha extends RealmObject {
         this.id = id;
     }
 
-    public Ficha getFicha() {
-        return ficha;
+    public SerieTreino getSerie_treino() {
+        return serie_treino;
     }
 
-    public void setFicha(Ficha ficha) {
-        this.ficha = ficha;
+    public void setSerie_treino(SerieTreino serie_treino) {
+        this.serie_treino = serie_treino;
     }
 
     public String getMid() {

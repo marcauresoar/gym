@@ -67,9 +67,7 @@ public class SessionUtils {
     }
 
     public String getNomeUsuario(){
-        Log.i("id", getIdUsuario());
-        return "";
-        //return getUsuario().getNome();
+        return getUsuario().getNome();
     }
 
     public String getEmailUsuario(){

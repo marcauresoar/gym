@@ -10,32 +10,34 @@
 	<context:component-scan base-package="com.gymproject.controller" />
 	<mvc:annotation-driven />
 
-	<!--<bean id="dataSource"
+	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/gym" />
 		<property name="username" value="root" />
 		<property name="password" value="vertigo" />
-	</bean>-->
-	
+	</bean>
+	<!--
 	 <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://127.7.147.2:3306/gym" />
 		<property name="username" value="adminJ97t4GQ" />
 		<property name="password" value="NwWe6AttGL8D" />
-	</bean> 
+	</bean> -->
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>com.gymproject.model.Employee</value>
 				<value>com.gymproject.model.Usuario</value>
 				<value>com.gymproject.model.Ficha</value>
 				<value>com.gymproject.model.Exercicio</value>
 				<value>com.gymproject.model.Serie</value>
+				<value>com.gymproject.model.Treino</value>
+				<value>com.gymproject.model.ExercicioTreino</value>
+				<value>com.gymproject.model.SerieTreino</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -53,9 +55,6 @@
 
 	<bean id="persistenceExceptionTranslationPostProcessor"
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
-	<bean id="dataDao" class="com.gymproject.dao.DataDaoImpl"></bean>
-	<bean id="dataServices" class="com.gymproject.services.DataServicesImpl"></bean>
 	
 	<bean id="acessoDao" class="com.gymproject.dao.AcessoDaoImpl"></bean>
 	<bean id="acessoServices" class="com.gymproject.services.AcessoServicesImpl"></bean>
@@ -68,5 +67,14 @@
 	
 	<bean id="serieDao" class="com.gymproject.dao.SerieDaoImpl"></bean>
 	<bean id="serieServices" class="com.gymproject.services.SerieServicesImpl"></bean>
+	
+	<bean id="treinoDao" class="com.gymproject.dao.TreinoDaoImpl"></bean>
+	<bean id="treinoServices" class="com.gymproject.services.TreinoServicesImpl"></bean>
+	
+	<bean id="exercicioTreinoDao" class="com.gymproject.dao.ExercicioTreinoDaoImpl"></bean>
+	<bean id="exercicioTreinoServices" class="com.gymproject.services.ExercicioTreinoServicesImpl"></bean>
+	
+	<bean id="serieTreinoDao" class="com.gymproject.dao.SerieTreinoDaoImpl"></bean>
+	<bean id="serieTreinoServices" class="com.gymproject.services.SerieTreinoServicesImpl"></bean>
 	
 </beans>

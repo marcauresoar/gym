@@ -29,6 +29,10 @@
             android:label="@string/title_activity_ficha"
             android:theme="@style/MyMaterialTheme" />
         <activity
+            android:name=".activities.TreinoActivity"
+            android:label="@string/title_activity_treino"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
             android:name=".activities.SalvarFichaActivity"
             android:label="@string/title_activity_gerenciar_ficha"
             android:theme="@style/MyMaterialTheme" />

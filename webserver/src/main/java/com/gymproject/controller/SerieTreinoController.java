@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gymproject.classes.Status;
-import com.gymproject.classes.UpdateFicha;
-import com.gymproject.model.Ficha;
-import com.gymproject.services.FichaServices;
+import com.gymproject.classes.UpdateSerieTreino;
+import com.gymproject.model.SerieTreino;
+import com.gymproject.services.SerieTreinoServices;
 
 @Controller
-@RequestMapping("/ficha")
-public class FichaController {
+@RequestMapping("/serie_treino")
+public class SerieTreinoController {
 
 	@Autowired
-	FichaServices fichaServices;
+	SerieTreinoServices serieServices;
 
 	@RequestMapping(value = "/listar/{id}", method = RequestMethod.GET)
 	public @ResponseBody Status listar(@PathVariable("id") String id) {
 		try {
-			List<Ficha> dados = fichaServices.listar(id);
-			return new Status(1, "Fichas listadas com sucesso!", dados);
+			List<SerieTreino> dados = serieServices.listar(id);
+			return new Status(1, "Series listadas com sucesso!", dados);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,23 +35,23 @@ public class FichaController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Status update(@RequestBody List<UpdateFicha> updates) {
+	public @ResponseBody Status update(@RequestBody List<UpdateSerieTreino> updates) {
 
 		if (updates.size() > 0) {
 			int erros = 0, sucessos = 0;
 
-			for(UpdateFicha update : updates){
+			for(UpdateSerieTreino update : updates){
 
 				try {
 					if (update.getAcao().equals("insert") || update.getAcao().equals("update")) {
 						if(update.getAcao().equals("insert")){
-							update.getFicha().setId(null);
+							update.getSerie_treino().setId(null);
 						}
-						fichaServices.save(update.getFicha());
+						serieServices.save(update.getSerie_treino());
 						sucessos++;
 					}
 					if (update.getAcao().equals("delete")) {
-						fichaServices.delete(update.getMid());
+						serieServices.delete(update.getMid());
 						sucessos++;
 					}
 

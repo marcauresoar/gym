@@ -1,7 +1,6 @@
 package com.gymproject.app.models;
 
 import io.realm.RealmObject;
-import io.realm.UsuarioRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
 public class Usuario extends RealmObject {

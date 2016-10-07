@@ -3,8 +3,6 @@ package com.gymproject.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -38,7 +35,7 @@ public class Treino implements Serializable {
 	@Column(name = "hora_fim", nullable = true)
 	private Time hora_fim;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
 

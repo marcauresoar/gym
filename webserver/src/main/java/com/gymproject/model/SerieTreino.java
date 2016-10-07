@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -37,7 +36,11 @@ public class SerieTreino implements Serializable {
 	@Column(name = "tempo", nullable = true)
 	private Integer tempo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@Column(name = "feito")
+	private boolean feito;
+	
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "exercicio_treino_id", nullable = false)
 	private ExercicioTreino exercicio_treino;
 
@@ -81,12 +84,20 @@ public class SerieTreino implements Serializable {
 		this.tempo = tempo;
 	}
 
-	public ExercicioTreino getExercicio() {
+	public boolean isFeito() {
+		return feito;
+	}
+
+	public void setFeito(boolean feito) {
+		this.feito = feito;
+	}
+
+	public ExercicioTreino getExercicio_treino() {
 		return exercicio_treino;
 	}
 
-	public void setExercicio(ExercicioTreino exercicio) {
-		this.exercicio_treino = exercicio;
+	public void setExercicio_treino(ExercicioTreino exercicio_treino) {
+		this.exercicio_treino = exercicio_treino;
 	}
 	
 }
