@@ -15,11 +15,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.gymproject.app.R;
+import com.gymproject.app.adapters.CustomSpinnerAdapter;
+import com.gymproject.app.classes.ItemData;
+import com.gymproject.app.dao.ExercicioDao;
 import com.gymproject.app.dao.FichaDao;
+import com.gymproject.app.dao.SerieDao;
+import com.gymproject.app.dao.TreinoDao;
+import com.gymproject.app.models.Exercicio;
+import com.gymproject.app.models.ExercicioTreino;
 import com.gymproject.app.models.Ficha;
+import com.gymproject.app.models.Serie;
+import com.gymproject.app.models.SerieTreino;
+import com.gymproject.app.models.Treino;
 import com.gymproject.app.sync.SyncService;
 import com.gymproject.app.sync.event.SyncEvent;
 import com.gymproject.app.sync.event.SyncStatus;
@@ -27,8 +38,12 @@ import com.gymproject.app.sync.event.SyncType;
 import com.gymproject.app.utils.HashUtils;
 import com.gymproject.app.utils.SessionUtils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
@@ -39,6 +54,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
 
     EditText edtData, edtHoraInicio, edtHoraFim;
+    Spinner spnFicha;
 
     DatePickerDialog dialogData;
     TimePickerDialog dialogHoraInicio;
@@ -48,6 +64,8 @@ public class SalvarTreinoActivity extends AppCompatActivity {
     Realm realm;
 
     String id = "";
+
+    ArrayList<ItemData> mItens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +79,17 @@ public class SalvarTreinoActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        mItens = new ArrayList<>();
+        List<Ficha> items = FichaDao.getAll(realm);
+        for(Ficha item : items){
+            mItens.add(new ItemData(item.getNome(), 0, item.getId()));
+        }
+        spnFicha =(Spinner)findViewById(R.id.spnFicha);
+        CustomSpinnerAdapter adapter=new CustomSpinnerAdapter(this,
+                R.layout.row_grupo_muscular, R.id.text, mItens);
+        spnFicha.setAdapter(adapter);
+
 
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -181,29 +210,78 @@ public class SalvarTreinoActivity extends AppCompatActivity {
     }
 
     public void salvarRegistro(){
-        String nome = edtData.getText().toString();
-        if(nome.isEmpty()){
+        String data = edtData.getText().toString();
+        String horaInicio = edtHoraInicio.getText().toString();
+        String horaFim = edtHoraFim.getText().toString();
+        ItemData selectedItem = (ItemData) spnFicha.getSelectedItem();
+        String ficha_id = selectedItem.getId();
+        if(data.isEmpty()){
             snackbar = Snackbar
-                    .make(coordinatorLayout, "Por favor, preencha o campo Nome.", Snackbar.LENGTH_LONG);
+                    .make(coordinatorLayout, "Por favor, preencha o campo Data.", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } else if(horaInicio.isEmpty()){
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "Por favor, preencha o campo Hora início.", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }  else if(ficha_id.isEmpty()){
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "Por favor, preencha o campo Ficha realizada.", Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
             // cria o registro e insere no realm
-            Ficha ficha = new Ficha();
+            Treino treino = new Treino();
             String acao = "";
             if(!id.isEmpty()) {
-                ficha.setId(id);
+                treino.setId(id);
                 acao = "update";
             }else{
-                ficha.setId(HashUtils.generateId());
+                treino.setId(HashUtils.generateId());
                 acao = "insert";
             }
-            ficha.setNome(nome);
-            ficha.setUsuario(SessionUtils.getInstance(getApplicationContext()).getUsuario());
-            FichaDao.save(ficha, acao);
+
+            try {
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = formatter.parse(data);
+                data = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            treino.setData(data);
+            treino.setHora_inicio(horaInicio);
+            treino.setHora_fim(horaFim);
+            treino.setUsuario(SessionUtils.getInstance(getApplicationContext()).getUsuario());
+            TreinoDao.save(treino, acao);
+
+            // se for insert, cria um clone da ficha para treino
+            if(acao.equals("insert")) {
+                List<Exercicio> exercicios = ExercicioDao.getAll(realm, ficha_id);
+                for (Exercicio exercicio : exercicios) {
+                    ExercicioTreino novoExercicio = new ExercicioTreino();
+
+                    novoExercicio.setId(HashUtils.generateId());
+                    novoExercicio.setNome(exercicio.getNome());
+                    novoExercicio.setGrupo_muscular(exercicio.getGrupo_muscular());
+                    novoExercicio.setTreino(treino);
+
+                    List<Serie> series = SerieDao.getAll(realm, exercicio.getId());
+                    for (Serie serie : series) {
+                        SerieTreino novaSerie = new SerieTreino();
+
+                        novaSerie.setId(HashUtils.generateId());
+                        novaSerie.setTipo(serie.getTipo());
+                        novaSerie.setPeso(serie.getPeso());
+                        novaSerie.setRepeticoes(serie.getRepeticoes());
+                        novaSerie.setTempo(serie.getTempo());
+                        novaSerie.setExercicio_treino(novoExercicio);
+                    }
+                }
+            }
+
 
             // dispara sync e fecha activity
-            SyncEvent.send(SyncType.FICHAS, SyncStatus.COMPLETED);
-            SyncService.request(SyncType.FICHAS);
+            SyncEvent.send(SyncType.TREINOS, SyncStatus.COMPLETED);
+            SyncService.request(SyncType.TREINOS);
             finish();
         }
     }
