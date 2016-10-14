@@ -22,8 +22,10 @@ import com.gymproject.app.R;
 import com.gymproject.app.adapters.CustomSpinnerAdapter;
 import com.gymproject.app.classes.ItemData;
 import com.gymproject.app.dao.ExercicioDao;
+import com.gymproject.app.dao.ExercicioTreinoDao;
 import com.gymproject.app.dao.FichaDao;
 import com.gymproject.app.dao.SerieDao;
+import com.gymproject.app.dao.SerieTreinoDao;
 import com.gymproject.app.dao.TreinoDao;
 import com.gymproject.app.models.Exercicio;
 import com.gymproject.app.models.ExercicioTreino;
@@ -263,6 +265,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
                     novoExercicio.setNome(exercicio.getNome());
                     novoExercicio.setGrupo_muscular(exercicio.getGrupo_muscular());
                     novoExercicio.setTreino(treino);
+                    ExercicioTreinoDao.save(novoExercicio, "insert");
 
                     List<Serie> series = SerieDao.getAll(realm, exercicio.getId());
                     for (Serie serie : series) {
@@ -274,6 +277,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
                         novaSerie.setRepeticoes(serie.getRepeticoes());
                         novaSerie.setTempo(serie.getTempo());
                         novaSerie.setExercicio_treino(novoExercicio);
+                        SerieTreinoDao.save(novaSerie, "insert");
                     }
                 }
             }

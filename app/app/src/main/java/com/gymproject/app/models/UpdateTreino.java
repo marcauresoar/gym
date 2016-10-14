@@ -32,7 +32,7 @@ public class UpdateTreino extends RealmObject {
         return treino;
     }
 
-    public void setTreino(Treino ficha) {
+    public void setTreino(Treino treino) {
         this.treino = treino;
     }
 
