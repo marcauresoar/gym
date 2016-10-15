@@ -16,7 +16,7 @@ class SyncManager {
         syncMap.put(SyncType.FICHAS, new FichasSync(context));
         syncMap.put(SyncType.EXERCICIOS, new ExerciciosSync(context));
         syncMap.put(SyncType.TREINOS, new TreinosSync(context));
-        syncMap.put(SyncType.EXERCICIOS_TREINOS, new ExerciciosSync(context));
+        syncMap.put(SyncType.EXERCICIOS_TREINOS, new ExerciciosTreinoSync(context));
     }
 
     void doSync(@NonNull SyncType syncType) {

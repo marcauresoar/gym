@@ -270,7 +270,7 @@ public class ExercicioActivity extends AppCompatActivity  implements RecyclerVie
             if (!mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(true);
             }
-        } else if (event.getType() == SyncType.SERIES && event.getStatus() == SyncStatus.COMPLETED) {
+        } else if (event.getType() == SyncType.EXERCICIOS && event.getStatus() == SyncStatus.COMPLETED) {
             mSwipeRefreshLayout.setRefreshing(false);
             refreshLista();
         }

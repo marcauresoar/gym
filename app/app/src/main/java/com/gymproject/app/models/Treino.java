@@ -15,6 +15,7 @@ public class Treino extends RealmObject implements Serializable {
     private String data;
     private String hora_inicio;
     private String hora_fim;
+    private String ficha_id;
 
     private Usuario usuario;
 
@@ -51,6 +52,14 @@ public class Treino extends RealmObject implements Serializable {
 
     public void setHora_fim(String hora_fim) {
         this.hora_fim = hora_fim;
+    }
+
+    public String getFicha_id() {
+        return ficha_id;
+    }
+
+    public void setFicha_id(String ficha_id) {
+        this.ficha_id = ficha_id;
     }
 
     public Usuario getUsuario() {

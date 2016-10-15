@@ -206,7 +206,8 @@ CREATE TABLE `treino` (
   `data` date NOT NULL,
   `hora_inicio` time NOT NULL,
   `hora_fim` time DEFAULT NULL,
-  `usuario_id` int(11) NOT NULL
+  `usuario_id` int(11) NOT NULL,
+  `ficha_id` int(11) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `treino` (`id`, `data`, `hora_inicio`, `hora_fim`, `usuario_id`) VALUES
@@ -380,40 +381,40 @@ ALTER TABLE `usuario`
 -- Constraints for table `exercicio`
 --
 ALTER TABLE `exercicio`
-  ADD CONSTRAINT `fk_exercicio_ficha1` FOREIGN KEY (`ficha_id`) REFERENCES `ficha` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_exercicio_ficha1` FOREIGN KEY (`ficha_id`) REFERENCES `ficha` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `exercicio_treino`
 --
 ALTER TABLE `exercicio_treino`
-  ADD CONSTRAINT `fk_exercicio_treino_treino1` FOREIGN KEY (`treino_id`) REFERENCES `treino` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_exercicio_treino_treino1` FOREIGN KEY (`treino_id`) REFERENCES `treino` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `ficha`
 --
 ALTER TABLE `ficha`
-  ADD CONSTRAINT `fk_ficha_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_ficha_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `serie`
 --
 ALTER TABLE `serie`
-  ADD CONSTRAINT `fk_serie_exercicio` FOREIGN KEY (`exercicio_id`) REFERENCES `exercicio` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_serie_exercicio` FOREIGN KEY (`exercicio_id`) REFERENCES `exercicio` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `serie_treino`
 --
 ALTER TABLE `serie_treino`
-  ADD CONSTRAINT `fk_serie_treino_exercicio_treino1` FOREIGN KEY (`exercicio_treino_id`) REFERENCES `exercicio_treino` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_serie_treino_exercicio_treino1` FOREIGN KEY (`exercicio_treino_id`) REFERENCES `exercicio_treino` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `treino`
 --
 ALTER TABLE `treino`
-  ADD CONSTRAINT `fk_treino_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_treino_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
   ALTER TABLE `avaliacao`
-  ADD CONSTRAINT `fk_avaliacao_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_avaliacao_usuario1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

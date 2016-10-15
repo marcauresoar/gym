@@ -6,8 +6,12 @@
 
     <string name="title_activity_ficha">Fichas de Exercício</string>
     <string name="title_activity_gerenciar_ficha">Salvar Ficha</string>
-    <string name="title_activity_exercicio">Salvar Exercício</string>
+
+    <string name="title_activity_exercicio">Gerenciar Exercícios</string>
+    <string name="title_activity_exercicio_treino">Executar Exercícios</string>
 
     <string name="title_activity_treino">Treinos</string>
     <string name="title_activity_gerenciar_treino">Salvar Treino</string>
+
+    <string name="title_activity_salvar_exercicio">Salvar Exercício</string>
 </resources>

@@ -51,7 +51,7 @@ public class SerieTreinoDao {
     @NonNull
     public static List<SerieTreino> getAll(@NonNull Realm realm, String id) {
         realm.beginTransaction();
-        RealmResults<SerieTreino> results = realm.where(SerieTreino.class).equalTo("exercicio.id", id).findAll();
+        RealmResults<SerieTreino> results = realm.where(SerieTreino.class).equalTo("exercicio_treino.id", id).findAll();
         realm.commitTransaction();
         List<SerieTreino> lista = new ArrayList<>(results.subList(0, results.size()));
         return lista;

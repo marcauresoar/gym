@@ -190,7 +190,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
                 Treino fichaSelected = adapter.getItem(adapter.getSelectedItem());
                 String fichaId = fichaSelected.getId();
 
-                Intent intent = new Intent(TreinoActivity.this, SalvarFichaActivity.class);
+                Intent intent = new Intent(TreinoActivity.this, SalvarTreinoActivity.class);
                 Bundle b = new Bundle();
                 b.putString("id", fichaId);
                 intent.putExtras(b);
@@ -254,7 +254,7 @@ public class TreinoActivity extends AppCompatActivity implements RecyclerView.On
                     Treino fichaSelected = adapter.getItem(idx);
                     String fichaId = fichaSelected.getId();
 
-                    Intent intent = new Intent(TreinoActivity.this, ExercicioActivity.class);
+                    Intent intent = new Intent(TreinoActivity.this, ExercicioTreinoActivity.class);
                     Bundle b = new Bundle();
                     b.putString("id", fichaId);
                     intent.putExtras(b);

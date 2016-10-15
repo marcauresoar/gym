@@ -47,7 +47,7 @@ public class TreinoController {
 						if(update.getAcao().equals("insert")){
 							update.getTreino().setId(null);
 						}
-						fichaServices.save(update.getTreino());
+						fichaServices.save(update.getTreino(), update.getAcao());
 						sucessos++;
 					}
 					if (update.getAcao().equals("delete")) {

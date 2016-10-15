@@ -1,8 +1,6 @@
 package com.gymproject.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,17 +25,19 @@ public class Treino implements Serializable {
 	private Long id;
 
 	@Column(name = "data", nullable = false)
-	private Date data;
+	private String data;
 
 	@Column(name = "hora_inicio", nullable = false)
-	private Time hora_inicio;
+	private String hora_inicio;
 
 	@Column(name = "hora_fim", nullable = true)
-	private Time hora_fim;
+	private String hora_fim;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
+	
+	private String ficha_id;
 
 	public Long getId() {
 		return id;
@@ -47,28 +47,36 @@ public class Treino implements Serializable {
 		this.id = id;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
-	public Time getHora_inicio() {
+	public String getHora_inicio() {
 		return hora_inicio;
 	}
 
-	public void setHora_inicio(Time hora_inicio) {
+	public void setHora_inicio(String hora_inicio) {
 		this.hora_inicio = hora_inicio;
 	}
 
-	public Time getHora_fim() {
+	public String getHora_fim() {
 		return hora_fim;
 	}
 
-	public void setHora_fim(Time hora_fim) {
+	public void setHora_fim(String hora_fim) {
 		this.hora_fim = hora_fim;
+	}
+
+	public String getFicha_id() {
+		return ficha_id;
+	}
+
+	public void setFicha_id(String ficha_id) {
+		this.ficha_id = ficha_id;
 	}
 
 	public Usuario getUsuario() {

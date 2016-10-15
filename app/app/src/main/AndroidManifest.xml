@@ -47,7 +47,12 @@
             android:name=".activities.ExercicioActivity"
             android:label="@string/title_activity_exercicio"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".activities.SalvarExercicioActivity"></activity>
+        <activity
+            android:name=".activities.ExercicioTreinoActivity"
+            android:label="@string/title_activity_exercicio_treino"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".activities.SalvarExercicioActivity"
+            android:label="@string/title_activity_salvar_exercicio"></activity>
     </application>
 
 </manifest>

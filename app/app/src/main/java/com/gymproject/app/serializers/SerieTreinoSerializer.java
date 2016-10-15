@@ -17,6 +17,7 @@ public class SerieTreinoSerializer implements JsonSerializer<SerieTreino> {
         jsonObject.addProperty("tempo", src.getTempo());
         jsonObject.addProperty("repeticoes", src.getRepeticoes());
         jsonObject.addProperty("peso", src.getPeso());
+        jsonObject.addProperty("feito", String.valueOf(src.isFeito()));
         jsonObject.add("exercicio_treino", context.serialize(src.getExercicio_treino()));
         return jsonObject;
     }

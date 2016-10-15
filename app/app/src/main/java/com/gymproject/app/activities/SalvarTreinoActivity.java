@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.gymproject.app.R;
@@ -40,7 +41,10 @@ import com.gymproject.app.sync.event.SyncType;
 import com.gymproject.app.utils.HashUtils;
 import com.gymproject.app.utils.SessionUtils;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +61,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
 
     EditText edtData, edtHoraInicio, edtHoraFim;
     Spinner spnFicha;
+    TextView textView3;
 
     DatePickerDialog dialogData;
     TimePickerDialog dialogHoraInicio;
@@ -177,6 +182,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
             }
         }, newCalendar3.get(Calendar.HOUR), newCalendar3.get(Calendar.MINUTE), true);
 
+        textView3 = (TextView) findViewById(R.id.textView3);
 
 
         Bundle b = getIntent().getExtras();
@@ -225,7 +231,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
             snackbar = Snackbar
                     .make(coordinatorLayout, "Por favor, preencha o campo Hora início.", Snackbar.LENGTH_LONG);
             snackbar.show();
-        }  else if(ficha_id.isEmpty()){
+        }  else if(ficha_id.isEmpty() && id.isEmpty()){
             snackbar = Snackbar
                     .make(coordinatorLayout, "Por favor, preencha o campo Ficha realizada.", Snackbar.LENGTH_LONG);
             snackbar.show();
@@ -245,6 +251,7 @@ public class SalvarTreinoActivity extends AppCompatActivity {
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = formatter.parse(data);
                 data = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                System.out.println(data);
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -253,35 +260,8 @@ public class SalvarTreinoActivity extends AppCompatActivity {
             treino.setHora_inicio(horaInicio);
             treino.setHora_fim(horaFim);
             treino.setUsuario(SessionUtils.getInstance(getApplicationContext()).getUsuario());
+            treino.setFicha_id(ficha_id);
             TreinoDao.save(treino, acao);
-
-            // se for insert, cria um clone da ficha para treino
-            if(acao.equals("insert")) {
-                List<Exercicio> exercicios = ExercicioDao.getAll(realm, ficha_id);
-                for (Exercicio exercicio : exercicios) {
-                    ExercicioTreino novoExercicio = new ExercicioTreino();
-
-                    novoExercicio.setId(HashUtils.generateId());
-                    novoExercicio.setNome(exercicio.getNome());
-                    novoExercicio.setGrupo_muscular(exercicio.getGrupo_muscular());
-                    novoExercicio.setTreino(treino);
-                    ExercicioTreinoDao.save(novoExercicio, "insert");
-
-                    List<Serie> series = SerieDao.getAll(realm, exercicio.getId());
-                    for (Serie serie : series) {
-                        SerieTreino novaSerie = new SerieTreino();
-
-                        novaSerie.setId(HashUtils.generateId());
-                        novaSerie.setTipo(serie.getTipo());
-                        novaSerie.setPeso(serie.getPeso());
-                        novaSerie.setRepeticoes(serie.getRepeticoes());
-                        novaSerie.setTempo(serie.getTempo());
-                        novaSerie.setExercicio_treino(novoExercicio);
-                        SerieTreinoDao.save(novaSerie, "insert");
-                    }
-                }
-            }
-
 
             // dispara sync e fecha activity
             SyncEvent.send(SyncType.TREINOS, SyncStatus.COMPLETED);
@@ -291,10 +271,25 @@ public class SalvarTreinoActivity extends AppCompatActivity {
     }
 
     public void preencherForm () {
-        Ficha ficha = FichaDao.getById(realm, id);
-        edtData.setText(ficha.getNome());
+        Treino treino = TreinoDao.getById(realm, id);
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dataFormatada = "";
+        try {
+            Date date = formatter.parse(treino.getData());
+            dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        edtData.setText(dataFormatada);
+
+        edtHoraInicio.setText(treino.getHora_inicio());
+        edtHoraFim.setText(treino.getHora_fim());
 
 
+        spnFicha.setVisibility(View.GONE);
+        textView3.setVisibility(View.GONE);
     }
 
 }

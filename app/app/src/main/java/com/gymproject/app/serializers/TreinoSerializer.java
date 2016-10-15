@@ -18,6 +18,7 @@ public class TreinoSerializer implements JsonSerializer<Treino> {
         jsonObject.addProperty("hora_inicio", src.getHora_inicio());
         jsonObject.addProperty("hora_fim", src.getHora_inicio());
         jsonObject.add("usuario", context.serialize(src.getUsuario()));
+        jsonObject.addProperty("ficha_id", src.getFicha_id());
         return jsonObject;
     }
 }

@@ -18,8 +18,8 @@ public class TreinoServicesImpl implements TreinoServices {
 	}
 
 	@Override
-	public boolean save(Treino dados) throws Exception {
-		return treinoDao.save(dados);
+	public boolean save(Treino dados, String acao) throws Exception {
+		return treinoDao.save(dados, acao);
 	}
 
 	@Override
