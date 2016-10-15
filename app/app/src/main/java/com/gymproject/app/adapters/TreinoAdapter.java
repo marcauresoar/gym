@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gymproject.app.R;
+import com.gymproject.app.dao.ExercicioTreinoDao;
+import com.gymproject.app.dao.SerieTreinoDao;
+import com.gymproject.app.models.ExercicioTreino;
+import com.gymproject.app.models.SerieTreino;
 import com.gymproject.app.models.Treino;
 
 import java.text.DateFormat;
@@ -95,7 +99,21 @@ public class TreinoAdapter extends RecyclerView.Adapter<TreinoAdapter.FichaViewH
             hora += " - Fim: " + model.getHora_fim().substring(0,5) + "h";
         }
         holder.hora.setText(hora);
-        holder.info.setText("--");
+
+        double seriesTotal = 0, seriesFeitas=0;
+        List<ExercicioTreino> exercicios = ExercicioTreinoDao.getAll(Realm.getDefaultInstance(), model.getId());
+        for(ExercicioTreino exercicio :exercicios){
+            List<SerieTreino> series = SerieTreinoDao.getAll(Realm.getDefaultInstance(), exercicio.getId());
+            seriesTotal += series.size();
+            for(SerieTreino serie:series) {
+                if(serie.isFeito()) {
+                    seriesFeitas++;
+                }
+            }
+        }
+        double porc = seriesTotal > 0 ? Math.floor(seriesFeitas / seriesTotal * 100) : 0;
+
+        holder.info.setText(exercicios.size() + " exercicios, " + seriesTotal + " series\n" + seriesFeitas + " series realizadas (" + (int) porc + "%)");
         holder.itemView.setSelected(selectedItem == position ? true : false);
     }
 
