@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_editar"
+        android:orderInCategory="100"
+        android:title="Editar"
+        android:icon="@mipmap/ic_editar"/>
+
+    <item
+        android:id="@+id/action_deletar"
+        android:orderInCategory="101"
+        android:title="Deletar"
+        android:icon="@mipmap/ic_deletar"/>
+</menu>

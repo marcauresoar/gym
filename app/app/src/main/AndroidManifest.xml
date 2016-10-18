@@ -33,12 +33,20 @@
             android:label="@string/title_activity_treino"
             android:theme="@style/MyMaterialTheme" />
         <activity
+            android:name=".activities.AvaliacaoActivity"
+            android:label="@string/title_activity_avaliacao"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
             android:name=".activities.SalvarFichaActivity"
             android:label="@string/title_activity_gerenciar_ficha"
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".activities.SalvarTreinoActivity"
             android:label="@string/title_activity_gerenciar_treino"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activities.SalvarAvaliacaoActivity"
+            android:label="@string/title_activity_gerenciar_avaliacao"
             android:theme="@style/MyMaterialTheme" />
 
         <service android:name=".sync.SyncService" />

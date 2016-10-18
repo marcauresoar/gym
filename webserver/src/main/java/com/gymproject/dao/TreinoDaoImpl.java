@@ -41,6 +41,7 @@ public class TreinoDaoImpl implements TreinoDao {
 	ExercicioTreinoDao exercicioTreinoDao;
 	SerieTreinoDao serieTreinoDao;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean save(Treino dados, String acao) throws Exception {
 		session = sessionFactory.openSession();

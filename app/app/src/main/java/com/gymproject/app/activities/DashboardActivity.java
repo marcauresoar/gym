@@ -72,7 +72,8 @@ public class DashboardActivity extends AppCompatActivity
             Intent intent = new Intent(this, TreinoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_aval) {
-
+            Intent intent = new Intent(this, AvaliacaoActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_sair) {
             new AlertDialog.Builder(this)
                     .setTitle("Atenção")

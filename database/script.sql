@@ -241,6 +241,7 @@ INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`) VALUES
 -- -----------------------------------------------------
 CREATE TABLE `avaliacao` (
   `id` int(11) NOT NULL,
+  `data` DATE NOT NULL,
   `altura` FLOAT NOT NULL,
   `peso` FLOAT NOT NULL,
   `peitoral` FLOAT NULL,
@@ -271,6 +272,17 @@ CREATE TABLE `avaliacao` (
   `tornozelo` FLOAT NULL,
   `usuario_id` int(11) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+--
+-- Dumping data for table `avaliacao`
+--
+
+INSERT INTO `avaliacao` (`id`, `data`, `altura`, `peso`, `peitoral`, `biceps`, `triceps`, `subescapular`, `supra_iliaca`, `axiliar_media`, `abdominal`, `coxa`, `panturrilha_media`, `torax`, `abdomen`, `cintura`, `quadril`, `braco_direito`, `braco_esquerdo`, `antebraco_direito`, `antebraco_esquerdo`, `coxa_direita`, `coxa_esquerda`, `perna_direita`, `perna_esquerda`, `ombro`, `pescoco`, `punho`, `joelho`, `tornozelo`, `usuario_id`) VALUES
+(1, '2012-12-12', 160, 60, 63, 67, 23, 24, 75, 44, 67, 12, 12, 23, 44, 54, 67, 34, 66, 34, 54, 76, 57, 87, 76, 88, 54, 23, 44, 67, 1),
+(2, '2014-11-20', 161, 70, 89, 34, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(3, '2016-10-17', 162, 80, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
 
 
 --

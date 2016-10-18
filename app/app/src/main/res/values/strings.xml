@@ -13,5 +13,8 @@
     <string name="title_activity_treino">Treinos</string>
     <string name="title_activity_gerenciar_treino">Salvar Treino</string>
 
+    <string name="title_activity_avaliacao">Avaliações</string>
+    <string name="title_activity_gerenciar_avaliacao">Salvar Avaliação</string>
+
     <string name="title_activity_salvar_exercicio">Salvar Exercício</string>
 </resources>

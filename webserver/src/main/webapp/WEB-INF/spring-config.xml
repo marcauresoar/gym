@@ -38,6 +38,7 @@
 				<value>com.gymproject.model.Treino</value>
 				<value>com.gymproject.model.ExercicioTreino</value>
 				<value>com.gymproject.model.SerieTreino</value>
+				<value>com.gymproject.model.Avaliacao</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -77,5 +78,8 @@
 	
 	<bean id="serieTreinoDao" class="com.gymproject.dao.SerieTreinoDaoImpl"></bean>
 	<bean id="serieTreinoServices" class="com.gymproject.services.SerieTreinoServicesImpl"></bean>
+	
+	<bean id="avaliacaoDao" class="com.gymproject.dao.AvaliacaoDaoImpl"></bean>
+	<bean id="avaliacaoServices" class="com.gymproject.services.AvaliacaoServicesImpl"></bean>
 	
 </beans>

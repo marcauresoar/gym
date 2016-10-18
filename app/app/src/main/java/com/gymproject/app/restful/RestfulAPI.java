@@ -5,11 +5,13 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.gymproject.app.models.Avaliacao;
 import com.gymproject.app.models.Exercicio;
 import com.gymproject.app.models.ExercicioTreino;
 import com.gymproject.app.models.Serie;
 import com.gymproject.app.models.SerieTreino;
 import com.gymproject.app.models.Treino;
+import com.gymproject.app.models.UpdateAvaliacao;
 import com.gymproject.app.models.UpdateExercicio;
 import com.gymproject.app.models.UpdateExercicioTreino;
 import com.gymproject.app.models.UpdateFicha;
@@ -19,12 +21,14 @@ import com.gymproject.app.models.UpdateSerieTreino;
 import com.gymproject.app.models.UpdateTreino;
 import com.gymproject.app.models.Usuario;
 import com.gymproject.app.restful.converters.LenientGsonConverterFactory;
+import com.gymproject.app.serializers.AvaliacaoSerializer;
 import com.gymproject.app.serializers.ExercicioSerializer;
 import com.gymproject.app.serializers.ExercicioTreinoSerializer;
 import com.gymproject.app.serializers.FichaSerializer;
 import com.gymproject.app.serializers.SerieSerializer;
 import com.gymproject.app.serializers.SerieTreinoSerializer;
 import com.gymproject.app.serializers.TreinoSerializer;
+import com.gymproject.app.serializers.UpdateAvaliacaoSerializer;
 import com.gymproject.app.serializers.UpdateExercicioSerializer;
 import com.gymproject.app.serializers.UpdateExercicioTreinoSerializer;
 import com.gymproject.app.serializers.UpdateFichaSerializer;
@@ -33,6 +37,7 @@ import com.gymproject.app.serializers.UpdateSerieTreinoSerializer;
 import com.gymproject.app.serializers.UpdateTreinoSerializer;
 import com.gymproject.app.serializers.UsuarioSerializer;
 
+import io.realm.AvaliacaoRealmProxy;
 import io.realm.ExercicioRealmProxy;
 import io.realm.ExercicioTreinoRealmProxy;
 import io.realm.FichaRealmProxy;
@@ -40,6 +45,7 @@ import io.realm.RealmObject;
 import io.realm.SerieRealmProxy;
 import io.realm.SerieTreinoRealmProxy;
 import io.realm.TreinoRealmProxy;
+import io.realm.UpdateAvaliacaoRealmProxy;
 import io.realm.UpdateExercicioRealmProxy;
 import io.realm.UpdateExercicioTreinoRealmProxy;
 import io.realm.UpdateFichaRealmProxy;
@@ -100,6 +106,11 @@ public class RestfulAPI {
                         .registerTypeAdapter(UpdateExercicioTreinoRealmProxy.class, new UpdateExercicioTreinoSerializer())
                         .registerTypeAdapter(UpdateSerieTreino.class, new UpdateSerieTreinoSerializer())
                         .registerTypeAdapter(UpdateSerieTreinoRealmProxy.class, new UpdateSerieTreinoSerializer())
+
+                        .registerTypeAdapter(Avaliacao.class, new AvaliacaoSerializer())
+                        .registerTypeAdapter(AvaliacaoRealmProxy.class, new AvaliacaoSerializer())
+                        .registerTypeAdapter(UpdateAvaliacao.class, new UpdateAvaliacaoSerializer())
+                        .registerTypeAdapter(UpdateAvaliacaoRealmProxy.class, new UpdateAvaliacaoSerializer())
 
                         .create();
 
