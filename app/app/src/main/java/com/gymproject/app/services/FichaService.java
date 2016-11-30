@@ -20,3 +20,5 @@ public interface FichaService {
     @POST("ficha/update")
     Call<Status> update(@Body List<UpdateFicha> updateFicha);
 }
+
+
